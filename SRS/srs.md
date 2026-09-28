@@ -1,5 +1,3 @@
-Also -
-
 \# Software Requirements Specification: Event Management System
 
 
