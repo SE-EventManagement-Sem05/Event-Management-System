@@ -15,19 +15,12 @@ The system will also provide location-based event suggestions and allow hosts to
 ### 1.3 Definitions, Acronyms \& Abbreviations
 
 | Term | Meaning |
-
 |------|---------|
-
 | SRS | Software Requirements Specification |
-
 | FR | Functional Requirement |
-
 | NFR | Non-Functional Requirement |
-
 | JWT | JSON Web Token |
-
 | MERN | MongoDB, Express, React, Node |
-
 | REST API | Representational State Transfer Application Programming Interface |
 
 ### 1.4 Overview
@@ -500,7 +493,7 @@ Requirements identified for future releases may be incorporated based on user ne
 
 ### Use Case Diagram
 
-![UML](images/UML.png)
+![UML](https://github.com/SE-EventManagement-Sem05/Event-Management-System/blob/main/Deliverable%201/images/UML.png?raw=true)
 
 **Notes on the diagram**
 
