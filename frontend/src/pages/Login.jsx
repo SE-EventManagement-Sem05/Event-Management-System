@@ -1,25 +1,23 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE, saveSession } from '../utils/auth.js';
 import '../styles/signup.css';
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    role: '',
+    role: 'attendee',
     email: '',
     password: '',
   });
-
   const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleChange(event) {
     const { id, value } = event.target;
-
     setFormData((previous) => ({ ...previous, [id]: value }));
     setErrors((previous) => ({ ...previous, [id]: '', submit: '' }));
-    setSuccess('');
   }
 
   function validateForm() {
@@ -31,7 +29,7 @@ export default function Login() {
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required.';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = 'Please enter a valid email address.';
     }
 
@@ -46,13 +44,12 @@ export default function Login() {
     event.preventDefault();
 
     const newErrors = validateForm();
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setSuccess('');
       return;
     }
 
+    setErrors({});
     setLoading(true);
 
     try {
@@ -68,19 +65,22 @@ export default function Login() {
 
       const data = await response.json().catch(() => ({}));
 
-      if (!response.ok || !data.token) {
-        setErrors({ submit: data.message || 'Unable to log in. Please try again.' });
-        setSuccess('');
+      if (!response.ok || !data.token || !data.user) {
+        setErrors({
+          submit: data.message || 'Unable to log in. Please try again.',
+        });
         return;
       }
 
       saveSession(data.token, data.user);
-      setErrors({});
-      setSuccess(`Welcome back, ${data.user.name}. You are logged in as ${data.user.role}.`);
-      setFormData({ role: '', email: '', password: '' });
+      navigate(
+        data.user.role === 'host' ? '/host/dashboard' : '/attendee/dashboard',
+        { replace: true }
+      );
     } catch (error) {
-      setErrors({ submit: 'Unable to connect to the server. Please try again.' });
-      setSuccess('');
+      setErrors({
+        submit: 'Unable to connect to the server. Please try again.',
+      });
     } finally {
       setLoading(false);
     }
@@ -89,63 +89,47 @@ export default function Login() {
   return (
     <section className="auth-page">
       <div className="auth-card">
-        <div className="auth-header">
-          <p className="eyebrow">Eventide</p>
-
-          <h1 className="auth-title">
-            Welcome <em>back</em>
-          </h1>
-
+        <header className="auth-header">
+          <p className="eyebrow">EVENTIDE</p>
+          <h1 className="auth-title">Welcome <em>back</em></h1>
           <p className="auth-subtitle">
             Log in to continue to your Eventide dashboard.
           </p>
-        </div>
+        </header>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="form-group">
-            <label className="form-label" htmlFor="role">
-              Role
-            </label>
-
+            <label className="form-label" htmlFor="role">Sign in as</label>
             <select
               id="role"
               className="form-select"
               value={formData.role}
               onChange={handleChange}
+              required
             >
-              <option value="" disabled>
-                Select your role
-              </option>
               <option value="attendee">Attendee</option>
               <option value="host">Host</option>
             </select>
-
-            {errors.role && <p className="form-error">{errors.role}</p>}
+            {errors.role && <p className="form-error" role="alert">{errors.role}</p>}
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="email">
-              Email
-            </label>
-
+            <label className="form-label" htmlFor="email">Email address</label>
             <input
               id="email"
               type="email"
               className="form-input"
-              placeholder="Enter your email"
+              placeholder="you@example.com"
               autoComplete="email"
               value={formData.email}
               onChange={handleChange}
+              required
             />
-
-            {errors.email && <p className="form-error">{errors.email}</p>}
+            {errors.email && <p className="form-error" role="alert">{errors.email}</p>}
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="password">
-              Password
-            </label>
-
+            <label className="form-label" htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
@@ -154,28 +138,25 @@ export default function Login() {
               autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
+              required
             />
-
-            {errors.password && <p className="form-error">{errors.password}</p>}
+            {errors.password && <p className="form-error" role="alert">{errors.password}</p>}
           </div>
 
-          {errors.submit && <p className="form-error">{errors.submit}</p>}
-
-          {success && <p className="form-success">{success}</p>}
+          {errors.submit && <p className="form-error" role="alert">{errors.submit}</p>}
 
           <button
             type="submit"
-            className="btn btn-gold btn-block"
+            className="btn btn-primary auth-submit"
             disabled={loading}
           >
-            {loading ? 'Logging in…' : 'Log In'}
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
 
-        <div className="auth-footer">
-          Don&apos;t have an account?
-          <Link to="/signup">Sign up</Link>
-        </div>
+        <footer className="auth-footer">
+          Don&apos;t have an account? <Link to="/signup">Create account</Link>
+        </footer>
       </div>
     </section>
   );
