@@ -34,6 +34,10 @@ export default function HostDashboard() {
     navigate('/login', { replace: true });
   }
 
+  function getDetailsPath(event) {
+    return `/host/events/${event.id}`;
+  }
+
   return (
     <section className="dash-page">
       <div className="dash-inner">
@@ -81,6 +85,7 @@ export default function HostDashboard() {
               emptyMessage={tab.empty}
               fetchPage={fetchHostEvents}
               onSessionExpired={handleSessionExpired}
+              getDetailsPath={getDetailsPath}
             />
           </div>
         ))}

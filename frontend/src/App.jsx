@@ -9,6 +9,8 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import HostDashboard from './pages/HostDashboard.jsx';
 import AttendeeDashboard from './pages/AttendeeDashboard.jsx';
+import EventDetails from './pages/EventDetails.jsx';
+
 
 export default function App() {
   return (
@@ -22,6 +24,10 @@ export default function App() {
           <Route
             path="/host/dashboard"
             element={<HostDashboard />}
+          />
+          <Route 
+            path="/host/events/:id" 
+            element={<EventDetails />} 
           />
         </Route>
 

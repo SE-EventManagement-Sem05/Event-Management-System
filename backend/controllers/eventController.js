@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const Event = require('../models/Event');
+const Registration = require('../models/Registration');
 
 const STATUSES = ['upcoming', 'past'];
 const DEFAULT_LIMIT = 6;
 const MAX_LIMIT = 50;
 const MAX_PAGE = 100000;
+const ID_PATTERN = /^[a-f\d]{24}$/i;
 
 // Returns a positive integer, the fallback when the value is absent,
 // or null when the value is present but invalid.
@@ -82,4 +84,75 @@ async function listHostEvents(req, res) {
   }
 }
 
-module.exports = { listHostEvents };
+function toEventDetails(event, registeredCount) {
+  return {
+    id: event._id,
+    title: event.title,
+    description: event.description,
+    date: event.date,
+    venue: event.venue,
+    price: event.price,
+    capacity: event.capacity,
+    registeredCount,
+  };
+}
+
+function databaseIsUp() {
+  return mongoose.connection.readyState === 1;
+}
+
+function sendUnavailable(res) {
+  return res.status(503).json({
+    message: 'Events are temporarily unavailable. Please try again shortly.',
+  });
+}
+
+// Loads an event and checks that the logged-in host owns it. Sends the error
+// response itself and returns null when the event cannot be used.
+async function loadOwnedEvent(req, res) {
+  const { id } = req.params;
+
+  if (!ID_PATTERN.test(id)) {
+    res.status(404).json({ message: 'Event not found.' });
+    return null;
+  }
+
+  if (!databaseIsUp()) {
+    sendUnavailable(res);
+    return null;
+  }
+
+  const event = await Event.findById(id);
+
+  if (!event) {
+    res.status(404).json({ message: 'Event not found.' });
+    return null;
+  }
+
+  if (event.hostId !== req.user.id) {
+    res.status(403).json({ message: 'You can only access your own events.' });
+    return null;
+  }
+
+  return event;
+}
+
+async function getHostEvent(req, res) {
+  try {
+    const event = await loadOwnedEvent(req, res);
+
+    if (!event) return undefined;
+
+    const registeredCount = await Registration.countDocuments({ eventId: event._id });
+
+    return res.status(200).json({ event: toEventDetails(event, registeredCount) });
+  } catch (error) {
+    console.error('Get event error:', error.message);
+
+    return res.status(500).json({
+      message: 'Unable to load the event. Please try again.',
+    });
+  }
+}
+
+module.exports = { listHostEvents, getHostEvent };

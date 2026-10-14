@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SessionExpiredError } from '../utils/events.js';
+import { Link } from 'react-router-dom';
 
 const PAGE_SIZE = 6;
 
@@ -20,6 +21,7 @@ export default function EventSection({
   emptyMessage,
   fetchPage,
   onSessionExpired,
+  getDetailsPath,
   pageSize = PAGE_SIZE,
 }) {
   const [page, setPage] = useState(1);
@@ -101,7 +103,15 @@ export default function EventSection({
         <ul className="event-grid">
           {result.events.map((event) => (
             <li key={event.id} className="event-card">
-              <h3 className="event-card-title">{event.title}</h3>
+                <h3 className="event-card-title">
+                {getDetailsPath ? (
+                  <Link className="event-card-link" to={getDetailsPath(event)}>
+                    {event.title}
+                  </Link>
+                ) : (
+                  event.title
+                )}
+              </h3>
 
               <p className="event-meta">
                 <span className="event-meta-label">Date</span>

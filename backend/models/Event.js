@@ -7,6 +7,8 @@ const eventSchema = new mongoose.Schema(
     description: { type: String, trim: true, maxlength: 2000, default: '' },
     venue: { type: String, required: true, trim: true, maxlength: 200 },
     date: { type: Date, required: true },
+    price: { type: Number, min: 0 },
+    capacity: { type: Number, min: 1, validate: Number.isInteger },
     category: { type: String, trim: true, maxlength: 50, default: '' },
   },
   { timestamps: true }

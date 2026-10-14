@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 const connectMongo = require('./mongo');
-const { listHostEvents } = require('./controllers/eventController');
+const { listHostEvents, getHostEvent } = require('./controllers/eventController');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -210,6 +210,13 @@ app.get(
   authenticateToken,
   requireRole('host'),
   listHostEvents
+);
+
+app.get(
+  '/api/host/events/:id',
+  authenticateToken,
+  requireRole('host'),
+  getHostEvent
 );
 
 // -------------------- START SERVER --------------------
