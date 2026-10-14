@@ -5,6 +5,8 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
+const connectMongo = require('./mongo');
+const { listHostEvents } = require('./controllers/eventController');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -201,8 +203,23 @@ app.get(
   }
 );
 
+// -------------------- HOST EVENTS (EMS-FR-05) --------------------
+
+app.get(
+  '/api/host/events',
+  authenticateToken,
+  requireRole('host'),
+  listHostEvents
+);
+
 // -------------------- START SERVER --------------------
 
-app.listen(PORT, () => {
-  console.log(`Backend running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  connectMongo();
+
+  app.listen(PORT, () => {
+    console.log(`Backend running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
