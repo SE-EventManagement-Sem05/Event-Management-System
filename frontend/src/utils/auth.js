@@ -1,26 +1,26 @@
-const TOKEN_KEY = 'ems_token';
-const USER_KEY = 'ems_user';
+const TOKEN_KEY = 'token';
+const USER_KEY = 'user';
 
 export const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 export function saveSession(token, user) {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  sessionStorage.setItem(TOKEN_KEY, token);
+  sessionStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 export function getToken() {
-  return localStorage.getItem(TOKEN_KEY);
+  return sessionStorage.getItem(TOKEN_KEY);
 }
 
 export function getUser() {
   try {
-    return JSON.parse(localStorage.getItem(USER_KEY));
+    return JSON.parse(sessionStorage.getItem(USER_KEY));
   } catch {
     return null;
   }
 }
 
 export function clearSession() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(USER_KEY);
 }
