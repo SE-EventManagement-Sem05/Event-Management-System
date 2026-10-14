@@ -4,6 +4,8 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const mongoose = require('mongoose');
 const db = require('../db');
 const Event = require('../models/Event');
+const Registration = require('../models/Registration');
+
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const VENUES = [
@@ -34,6 +36,10 @@ function buildEvents(hostId, label, upcomingCount, pastCount) {
       hostId,
       title: `${label} Upcoming ${String(i).padStart(2, '0')}`,
       venue: VENUES[i % VENUES.length],
+      description: 'Seeded sample event.',
+      price: (i % 4) * 250,
+      capacity: 50 + i * 10,
+      registered: i % 5,
       date: new Date(now + i * DAY_MS),
     });
   }
@@ -43,6 +49,10 @@ function buildEvents(hostId, label, upcomingCount, pastCount) {
       hostId,
       title: `${label} Past ${String(i).padStart(2, '0')}`,
       venue: VENUES[i % VENUES.length],
+      description: 'Seeded sample event.',
+      price: (i % 4) * 250,
+      capacity: 50 + i * 10,
+      registered: 3 + (i % 4),
       date: new Date(now - i * DAY_MS),
     });
   }
@@ -68,13 +78,24 @@ async function main() {
   await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
 
   const hostIds = [mainHost.id, ...(otherHost ? [otherHost.id] : [])];
+  const oldEvents = await Event.find({ hostId: { $in: hostIds } }).select('_id').lean();
+  await Registration.deleteMany({ eventId: { $in: oldEvents.map((event) => event._id) } });
   const removed = await Event.deleteMany({ hostId: { $in: hostIds } });
-
+  
   const events = buildEvents(mainHost.id, 'Main Host', 14, 9);
   if (otherHost) events.push(...buildEvents(otherHost.id, 'Other Host', 2, 1));
 
-  await Event.insertMany(events);
+  const inserted = await Event.insertMany(events);
 
+  // Dev-only registrations with made-up attendee ids, so event details show a count.
+  const registrations = [];
+  inserted.forEach((event, index) => {
+    for (let n = 1; n <= events[index].registered; n += 1) {
+      registrations.push({ eventId: event._id, attendeeId: 900000 + n });
+    }
+  });
+  await Registration.insertMany(registrations);
+  
   console.log(`Removed ${removed.deletedCount} old event(s) for the seeded host(s).`);
   console.log(`${mainEmail}: 14 upcoming, 9 past.`);
   if (otherHost) console.log(`${otherEmail}: 2 upcoming, 1 past.`);
