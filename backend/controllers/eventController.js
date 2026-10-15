@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Event = require('../models/Event');
 const Registration = require('../models/Registration');
+const { validateEventInput } = require('../validators/eventValidator');
+
 
 const STATUSES = ['upcoming', 'past'];
 const DEFAULT_LIMIT = 6;
@@ -155,4 +157,78 @@ async function getHostEvent(req, res) {
   }
 }
 
-module.exports = { listHostEvents, getHostEvent };
+
+function sendValidationErrors(res, errors) {
+  return res.status(400).json({
+    message: 'Please correct the highlighted fields.',
+    errors,
+  });
+}
+
+async function createEvent(req, res) {
+  const { errors, value } = validateEventInput(req.body);
+
+  if (Object.keys(errors).length > 0) {
+    return sendValidationErrors(res, errors);
+  }
+
+  if (!databaseIsUp()) {
+    return sendUnavailable(res);
+  }
+
+  try {
+    // hostId comes from the verified JWT, never from the request body.
+    const event = await Event.create({ ...value, hostId: req.user.id });
+
+    return res.status(201).json({
+      message: 'Event created successfully.',
+      event: toEventDetails(event, 0),
+    });
+  } catch (error) {
+    console.error('Create event error:', error.message);
+
+    return res.status(500).json({
+      message: 'Unable to create the event. Please try again.',
+    });
+  }
+}
+
+async function updateEvent(req, res) {
+  try {
+    // Ownership is checked before the body is validated.
+    const event = await loadOwnedEvent(req, res);
+
+    if (!event) return undefined;
+
+    const { errors, value } = validateEventInput(req.body, {
+      existingDate: event.date,
+    });
+
+    const registeredCount = await Registration.countDocuments({ eventId: event._id });
+
+    // Extra rule: capacity may not drop below the attendees already registered.
+    if (!errors.capacity && value.capacity < registeredCount) {
+      errors.capacity = `Capacity cannot be lower than the ${registeredCount} attendee(s) already registered.`;
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return sendValidationErrors(res, errors);
+    }
+
+    event.set(value);
+    await event.save();
+
+    return res.status(200).json({
+      message: 'Event updated successfully.',
+      event: toEventDetails(event, registeredCount),
+    });
+  } catch (error) {
+    console.error('Update event error:', error.message);
+
+    return res.status(500).json({
+      message: 'Unable to update the event. Please try again.',
+    });
+  }
+}
+
+module.exports = { listHostEvents, getHostEvent, createEvent, updateEvent };

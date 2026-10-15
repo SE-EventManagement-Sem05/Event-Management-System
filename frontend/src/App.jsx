@@ -10,7 +10,8 @@ import Signup from './pages/Signup.jsx';
 import HostDashboard from './pages/HostDashboard.jsx';
 import AttendeeDashboard from './pages/AttendeeDashboard.jsx';
 import EventDetails from './pages/EventDetails.jsx';
-
+import CreateEvent from './pages/CreateEvent.jsx';
+import EditEvent from './pages/EditEvent.jsx';
 
 export default function App() {
   return (
@@ -29,6 +30,15 @@ export default function App() {
             path="/host/events/:id" 
             element={<EventDetails />} 
           />
+          <Route 
+            path="/host/events/new" 
+            element={<CreateEvent />} 
+          />
+          <Route 
+            path="/host/events/:id/edit" 
+            element={<EditEvent />} 
+          />
+
         </Route>
 
         <Route element={<ProtectedRoute role="attendee" />}>

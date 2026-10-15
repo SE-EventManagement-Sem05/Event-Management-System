@@ -22,6 +22,7 @@ export default function EventSection({
   fetchPage,
   onSessionExpired,
   getDetailsPath,
+  getEditPath,
   pageSize = PAGE_SIZE,
 }) {
   const [page, setPage] = useState(1);
@@ -122,6 +123,12 @@ export default function EventSection({
                 <span className="event-meta-label">Venue</span>
                 <span>{event.venue}</span>
               </p>
+
+              {getEditPath && (
+                <Link className="event-edit-link" to={getEditPath(event)}>
+                  Edit
+                </Link>
+              )}
             </li>
           ))}
         </ul>

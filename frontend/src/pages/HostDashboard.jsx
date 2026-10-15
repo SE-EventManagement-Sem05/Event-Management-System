@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import EventSection from '../components/EventSection.jsx';
 import { fetchHostEvents } from '../utils/events.js';
 import '../styles/events.css';
@@ -22,6 +22,16 @@ const TABS = [
 export default function HostDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('upcoming');
+  const location = useLocation();
+  const [notice] = useState(location.state?.notice || '');
+
+  useEffect(() => {
+    // Clear the one-time notice from history so a refresh does not repeat it.
+    if (location.state?.notice) {
+      navigate(location.pathname, { replace: true, state: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
   function handleLogout() {
@@ -37,6 +47,10 @@ export default function HostDashboard() {
   function getDetailsPath(event) {
     return `/host/events/${event.id}`;
   }
+  
+  function getEditPath(event) {
+    return `/host/events/${event.id}/edit`;
+  }
 
   return (
     <section className="dash-page">
@@ -48,11 +62,23 @@ export default function HostDashboard() {
             <p className="muted">Welcome, {user.name || 'Host'}!</p>
           </div>
 
-          <button type="button" className="dash-logout" onClick={handleLogout}>
-            Log out
-          </button>
+            <div className="dash-actions">
+            <Link to="/host/events/new" className="event-button event-button-primary">
+              Create event
+            </Link>
+
+            <button type="button" className="dash-logout" onClick={handleLogout}>
+              Log out
+            </button>
+          </div>
+
         </header>
 
+        {notice && (
+          <p className="dash-notice" role="status">
+            {notice}
+          </p>
+        )}
         <div className="dash-tabs" role="tablist" aria-label="Event lists">
           {TABS.map((tab) => (
             <button
@@ -86,6 +112,7 @@ export default function HostDashboard() {
               fetchPage={fetchHostEvents}
               onSessionExpired={handleSessionExpired}
               getDetailsPath={getDetailsPath}
+              getEditPath={getEditPath}
             />
           </div>
         ))}
