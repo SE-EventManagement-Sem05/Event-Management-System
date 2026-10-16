@@ -3,6 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import EventSection from './EventSection.jsx';
 import { SessionExpiredError } from '../utils/events.js';
+import { MemoryRouter } from 'react-router-dom';
+
+
 
 const ISO_DATE = '2030-01-15T10:30:00.000Z';
 
@@ -35,6 +38,7 @@ describe('EMS-FR-05 EventSection', () => {
     await screen.findByText('Event 1');
 
     expect(fetchPage).toHaveBeenCalledWith({ status: 'upcoming', page: 1, limit: 6 });
+    
   });
 
   test('each card shows title, date and venue', async () => {
@@ -138,5 +142,33 @@ describe('EMS-FR-05 EventSection', () => {
     renderSection(fetchPage, { onSessionExpired });
 
     await waitFor(() => expect(onSessionExpired).toHaveBeenCalledTimes(1));
+  });
+
+    test('each title links to the details page when getDetailsPath is given (EMS-FR-06)', async () => {
+    const fetchPage = vi.fn().mockResolvedValue({ events: sample(2), total: 2, totalPages: 1 });
+
+    render(
+      <MemoryRouter>
+        <EventSection
+          title="Upcoming events"
+          status="upcoming"
+          emptyMessage="none"
+          fetchPage={fetchPage}
+          getDetailsPath={(event) => `/host/events/${event.id}`}
+        />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByRole('link', { name: 'Event 1' })).toHaveAttribute('href', '/host/events/e1');
+    expect(screen.getByRole('link', { name: 'Event 2' })).toHaveAttribute('href', '/host/events/e2');
+  });
+
+  test('titles are plain text when getDetailsPath is not given', async () => {
+    const fetchPage = vi.fn().mockResolvedValue({ events: sample(1), total: 1, totalPages: 1 });
+    renderSection(fetchPage);
+
+    await screen.findByText('Event 1');
+
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 });
