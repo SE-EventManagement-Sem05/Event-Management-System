@@ -1,5 +1,12 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { ApiError, SessionExpiredError, fetchHostEvent } from './events.js';
+import {
+  ApiError,
+  ApiValidationError,
+  SessionExpiredError,
+  createHostEvent,
+  fetchHostEvent,
+  updateHostEvent,
+} from './events.js';
 
 function response(status, body) {
   return {
@@ -77,5 +84,70 @@ describe('EMS-FR-06 fetchHostEvent', () => {
       status: 0,
       message: 'Unable to connect to the server. Please try again.',
     });
+  });
+});
+
+describe('EMS-FR-07 createHostEvent and updateHostEvent', () => {
+  const payload = { title: 'T', description: 'D', date: '2030-06-15T10:30:00.000Z', venue: 'V', price: 1, capacity: 2 };
+
+  test('createHostEvent posts the payload with the bearer token and returns the event', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(response(201, { event: { id: 'new1' } }));
+
+    const event = await createHostEvent(payload);
+
+    expect(event).toEqual({ id: 'new1' });
+
+    const [url, options] = globalThis.fetch.mock.calls[0];
+    expect(url).toMatch(/\/host\/events$/);
+    expect(options.method).toBe('POST');
+    expect(options.headers).toMatchObject({
+      Authorization: 'Bearer jwt-token',
+      'Content-Type': 'application/json',
+    });
+    expect(JSON.parse(options.body)).toEqual(payload);
+  });
+
+  test('updateHostEvent puts the payload to the event URL', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(response(200, { event: { id: 'abc' } }));
+
+    await updateHostEvent('abc', payload);
+
+    const [url, options] = globalThis.fetch.mock.calls[0];
+    expect(url).toMatch(/\/host\/events\/abc$/);
+    expect(options.method).toBe('PUT');
+    expect(JSON.parse(options.body)).toEqual(payload);
+  });
+
+  test('a 400 with field errors becomes an ApiValidationError', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(
+      response(400, {
+        message: 'Please correct the highlighted fields.',
+        errors: { title: 'Title is required.' },
+      })
+    );
+
+    await expect(createHostEvent(payload)).rejects.toBeInstanceOf(ApiValidationError);
+    await expect(createHostEvent(payload)).rejects.toMatchObject({
+      status: 400,
+      fieldErrors: { title: 'Title is required.' },
+    });
+  });
+
+  test('a 403 on update becomes an ApiError with the server message', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(
+      response(403, { message: 'You can only access your own events.' })
+    );
+
+    await expect(updateHostEvent('abc', payload)).rejects.toMatchObject({
+      status: 403,
+      message: 'You can only access your own events.',
+    });
+  });
+
+  test('a 401 on create clears the session', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(response(401, { message: 'Invalid or expired token.' }));
+
+    await expect(createHostEvent(payload)).rejects.toBeInstanceOf(SessionExpiredError);
+    expect(sessionStorage.getItem('token')).toBeNull();
   });
 });
