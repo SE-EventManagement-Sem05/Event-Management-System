@@ -171,4 +171,36 @@ describe('EMS-FR-05 EventSection', () => {
 
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
+
+    test('shows an Edit link on each card when getEditPath is given (EMS-FR-07)', async () => {
+    const fetchPage = vi.fn().mockResolvedValue({ events: sample(2), total: 2, totalPages: 1 });
+
+    render(
+      <MemoryRouter>
+        <EventSection
+          title="Upcoming events"
+          status="upcoming"
+          emptyMessage="none"
+          fetchPage={fetchPage}
+          getEditPath={(event) => `/host/events/${event.id}/edit`}
+        />
+      </MemoryRouter>
+    );
+
+    const links = await screen.findAllByRole('link', { name: 'Edit' });
+
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/host/events/e1/edit',
+      '/host/events/e2/edit',
+    ]);
+  });
+
+  test('shows no Edit link when getEditPath is not given', async () => {
+    const fetchPage = vi.fn().mockResolvedValue({ events: sample(1), total: 1, totalPages: 1 });
+    renderSection(fetchPage);
+
+    await screen.findByText('Event 1');
+
+    expect(screen.queryByRole('link', { name: 'Edit' })).not.toBeInTheDocument();
+  });
 });

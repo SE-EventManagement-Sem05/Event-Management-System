@@ -33,6 +33,19 @@ function renderPage() {
   );
 }
 
+function renderPageWithNotice() {
+  return render(
+    <MemoryRouter
+      initialEntries={[{ pathname: '/host/events/abc123', state: { notice: 'Event updated successfully.' } }]}
+    >
+      <Routes>
+        <Route path="/host/events/:id" element={<EventDetails />} />
+        <Route path="/login" element={<p>LOGIN PAGE</p>} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+
 const valueOf = (label) => screen.getByText(label).nextElementSibling;
 
 beforeEach(() => {
@@ -156,4 +169,32 @@ describe('EMS-FR-06 Event details page', () => {
 
     expect(await screen.findByText('LOGIN PAGE')).toBeInTheDocument();
   });
+
+    test('has an Edit event link to the edit form (EMS-FR-07)', async () => {
+    fetchHostEvent.mockResolvedValue(EVENT);
+    renderPage();
+
+    expect(await screen.findByRole('link', { name: 'Edit event' })).toHaveAttribute(
+      'href',
+      '/host/events/abc123/edit'
+    );
+  });
+
+  test('shows the notice sent after saving an edit (EMS-FR-07)', async () => {
+    fetchHostEvent.mockResolvedValue(EVENT);
+    renderPageWithNotice();
+
+    expect(screen.getByText('Event updated successfully.')).toBeInTheDocument();
+    await screen.findByRole('heading', { level: 1, name: 'Design Summit' });
+  });
+
+  test('shows no Edit event link when the event cannot be opened (EMS-FR-07)', async () => {
+    fetchHostEvent.mockRejectedValue(new ApiError('You can only access your own events.', 403));
+    renderPage();
+
+    await screen.findByText('You can only access your own events.');
+
+    expect(screen.queryByRole('link', { name: 'Edit event' })).not.toBeInTheDocument();
+  });
+  
 });

@@ -30,6 +30,16 @@ function renderDashboard() {
   );
 }
 
+function renderDashboardWithNotice() {
+  return render(
+    <MemoryRouter
+      initialEntries={[{ pathname: '/host/dashboard', state: { notice: 'Event created successfully.' } }]}
+    >
+      <HostDashboard />
+    </MemoryRouter>
+  );
+}
+
 beforeEach(() => {
   sessionStorage.setItem('user', JSON.stringify({ name: 'Host One', role: 'host' }));
   fetchHostEvents.mockReset();
@@ -88,4 +98,36 @@ describe('EMS-FR-05 Host dashboard', () => {
       '/host/events/p1'
     );
   });
+
+    test('has a Create event link to the create form (EMS-FR-07)', async () => {
+    fetchHostEvents.mockResolvedValue(NONE);
+    renderDashboard();
+
+    expect(screen.getByRole('link', { name: 'Create event' })).toHaveAttribute('href', '/host/events/new');
+    await screen.findByText('You have no upcoming events yet.');
+  });
+
+  test('shows the notice sent after saving an event (EMS-FR-07)', async () => {
+    fetchHostEvents.mockResolvedValue(NONE);
+    renderDashboardWithNotice();
+
+    expect(screen.getByText('Event created successfully.')).toBeInTheDocument();
+    await screen.findByText('You have no upcoming events yet.');
+  });
+
+  test('every card links to its edit form as well as its details (EMS-FR-07)', async () => {
+    fetchHostEvents.mockImplementation(async ({ status }) => (status === 'upcoming' ? UPCOMING : PAST));
+    renderDashboard();
+
+    await screen.findByText('Future Fest');
+    await screen.findByText('Old Gala');
+
+    const editHrefs = screen
+      .getAllByRole('link', { name: 'Edit', hidden: true })
+      .map((link) => link.getAttribute('href'));
+
+    expect(editHrefs).toEqual(['/host/events/u1/edit', '/host/events/p1/edit']);
+    expect(screen.getByRole('link', { name: 'Future Fest' })).toHaveAttribute('href', '/host/events/u1');
+  });
+  
 });
