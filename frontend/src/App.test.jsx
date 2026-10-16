@@ -22,15 +22,21 @@ function renderApp(path = '/') {
   );
 }
 
-const heroHeading = () => screen.getByRole('heading', { level: 1, name: /where great events find their people/i });
+// The login and signup cards contain their own <header>/<footer>, so the site
+// navigation bar and footer are selected by class, not by ARIA role.
+const navbar = () => within(document.querySelector('header.nav'));
+const siteFooter = () => within(document.querySelector('footer.footer'));
+
+const heroHeading = () =>
+  screen.getByRole('heading', { level: 1, name: /where great events find their people/i });
 
 describe('EMS-FR-01 Landing page in the app', () => {
   test('the landing page is shown at / with the navigation bar and footer', () => {
     renderApp('/');
 
     expect(heroHeading()).toBeInTheDocument();
-    expect(screen.getByRole('banner')).toBeInTheDocument();
-    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+    expect(document.querySelector('header.nav')).toBeInTheDocument();
+    expect(document.querySelector('footer.footer')).toBeInTheDocument();
   });
 
   test('"Get started" opens the signup page', async () => {
@@ -54,28 +60,26 @@ describe('EMS-FR-01 Landing page in the app', () => {
   test('the navigation bar links reach signup and login', async () => {
     renderApp('/');
     const user = userEvent.setup();
-    const nav = within(screen.getByRole('banner'));
 
-    await user.click(nav.getByRole('link', { name: 'Sign up' }));
+    await user.click(navbar().getByRole('link', { name: 'Sign up' }));
     expect(await screen.findByRole('heading', { level: 1, name: 'Create your account' })).toBeInTheDocument();
 
-    await user.click(within(screen.getByRole('banner')).getByRole('link', { name: 'Log in' }));
+    await user.click(navbar().getByRole('link', { name: 'Log in' }));
     expect(await screen.findByRole('heading', { level: 1, name: 'Welcome back' })).toBeInTheDocument();
   });
 
   test('the footer also offers Log in and Sign up', () => {
     renderApp('/');
-    const footer = within(screen.getByRole('contentinfo'));
 
-    expect(footer.getByRole('link', { name: 'Log in' })).toHaveAttribute('href', '/login');
-    expect(footer.getByRole('link', { name: 'Sign up' })).toHaveAttribute('href', '/signup');
+    expect(siteFooter().getByRole('link', { name: 'Log in' })).toHaveAttribute('href', '/login');
+    expect(siteFooter().getByRole('link', { name: 'Sign up' })).toHaveAttribute('href', '/signup');
   });
 
   test('the logo returns to the landing page from the login page', async () => {
     renderApp('/login');
     const user = userEvent.setup();
 
-    await user.click(within(screen.getByRole('banner')).getByRole('link', { name: 'Eventide home' }));
+    await user.click(navbar().getByRole('link', { name: 'Eventide home' }));
 
     expect(await screen.findByRole('heading', { level: 1, name: /where great events find their people/i })).toBeInTheDocument();
   });
@@ -84,7 +88,7 @@ describe('EMS-FR-01 Landing page in the app', () => {
     renderApp('/login');
     const user = userEvent.setup();
 
-    await user.click(within(screen.getByRole('banner')).getByRole('link', { name: 'About' }));
+    await user.click(navbar().getByRole('link', { name: 'About' }));
 
     expect(await screen.findByRole('heading', { level: 1, name: /where great events find their people/i })).toBeInTheDocument();
     expect(scrolled).toEqual(['about']);
@@ -95,12 +99,12 @@ describe('EMS-FR-01 routes', () => {
   test('/login and /signup open directly with the navigation bar', () => {
     const login = renderApp('/login');
     expect(screen.getByRole('heading', { level: 1, name: 'Welcome back' })).toBeInTheDocument();
-    expect(screen.getByRole('banner')).toBeInTheDocument();
+    expect(document.querySelector('header.nav')).toBeInTheDocument();
     login.unmount();
 
     renderApp('/signup');
     expect(screen.getByRole('heading', { level: 1, name: 'Create your account' })).toBeInTheDocument();
-    expect(screen.getByRole('banner')).toBeInTheDocument();
+    expect(document.querySelector('header.nav')).toBeInTheDocument();
   });
 
   test.each(['/abc', '/dashboard/xyz', '/login/extra'])('an unknown address (%s) goes to the landing page', (path) => {
