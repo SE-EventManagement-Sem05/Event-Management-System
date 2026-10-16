@@ -6,7 +6,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 const connectMongo = require('./mongo');
-const { listHostEvents, getHostEvent } = require('./controllers/eventController');
+const {
+  listHostEvents,
+  getHostEvent,
+  createEvent,
+  updateEvent,
+} = require('./controllers/eventController');
+
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -217,6 +224,21 @@ app.get(
   authenticateToken,
   requireRole('host'),
   getHostEvent
+);
+
+
+app.post(
+  '/api/host/events',
+  authenticateToken,
+  requireRole('host'),
+  createEvent
+);
+
+app.put(
+  '/api/host/events/:id',
+  authenticateToken,
+  requireRole('host'),
+  updateEvent
 );
 
 // -------------------- START SERVER --------------------

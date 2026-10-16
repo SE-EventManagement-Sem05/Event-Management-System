@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SessionExpiredError, fetchHostEvent } from '../utils/events.js';
 import { formatCapacity, formatEventDate, formatPrice } from '../utils/eventFormat.js';
 import '../styles/events.css';
@@ -8,6 +8,16 @@ import '../styles/eventdetails.css';
 export default function EventDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [notice] = useState(location.state?.notice || '');
+
+  useEffect(() => {
+    // Clear the one-time notice from history so a refresh does not repeat it.
+    if (location.state?.notice) {
+      navigate(location.pathname, { replace: true, state: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [event, setEvent] = useState(null);
   const [error, setError] = useState(null);
   const [reloadKey, setReloadKey] = useState(0);
@@ -72,6 +82,9 @@ export default function EventDetails() {
         <header className="event-details-header">
           <p className="eyebrow">Eventide · Host</p>
           <h1>{event.title}</h1>
+            <Link to={`/host/events/${event.id}/edit`} className="event-button event-button-primary">
+            Edit event
+          </Link>
         </header>
 
         <dl className="event-facts">
@@ -115,6 +128,12 @@ export default function EventDetails() {
         <Link to="/host/dashboard" className="event-back-link">
           ← Back to dashboard
         </Link>
+
+        {notice && (
+          <p className="dash-notice" role="status">
+            {notice}
+          </p>
+        )}
 
         {content}
       </div>

@@ -1,0 +1,127 @@
+/* Create and edit event forms (EMS-FR-07) */
+
+.event-form-card {
+  width: min(100%, 680px);
+  margin: 0 auto;
+  padding: 3rem;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+}
+
+.event-form-header {
+  margin-bottom: 2rem;
+}
+
+.event-form-header h1 {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  margin-bottom: 0.5rem;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.event-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.field-hint {
+  color: var(--text-2);
+  font-size: 0.75rem;
+}
+
+.event-form-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.event-form-actions .auth-submit {
+  flex: 1 1 220px;
+  width: auto;
+  margin-top: 0;
+}
+
+.event-form-cancel {
+  color: var(--text-2);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+a.event-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.event-button-primary {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #0b1022;
+}
+
+.event-button.event-button-primary:hover:not(:disabled) {
+  border-color: var(--gold);
+  color: #0b1022;
+  opacity: 0.9;
+}
+
+.event-details-header .event-button {
+  margin-top: 1rem;
+}
+
+.dash-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.dash-notice {
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(143, 201, 166, 0.25);
+  border-radius: 10px;
+  background: rgba(143, 201, 166, 0.05);
+  color: var(--ok);
+  font-size: 0.9rem;
+}
+
+/* Sits above the card's full-size details link, so Edit stays clickable. */
+.event-edit-link {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  color: var(--gold-soft);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  .event-form-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .event-form-row {
+    grid-template-columns: 1fr;
+  }
+}
