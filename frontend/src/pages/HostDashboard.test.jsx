@@ -74,4 +74,18 @@ describe('EMS-FR-05 Host dashboard', () => {
 
     expect(await screen.findByText('You have no past events yet.')).toBeVisible();
   });
+
+  test('every event title links to its details page (EMS-FR-06)', async () => {
+    fetchHostEvents.mockImplementation(async ({ status }) => (status === 'upcoming' ? UPCOMING : PAST));
+    renderDashboard();
+
+    await screen.findByText('Future Fest');
+    await screen.findByText('Old Gala');
+
+    expect(screen.getByRole('link', { name: 'Future Fest' })).toHaveAttribute('href', '/host/events/u1');
+    expect(screen.getByRole('link', { name: 'Old Gala', hidden: true })).toHaveAttribute(
+      'href',
+      '/host/events/p1'
+    );
+  });
 });

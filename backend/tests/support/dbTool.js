@@ -1,9 +1,13 @@
-// A small command-line helper that prepares the test database. It runs in plain
-// Node (not inside Jest), the same way the real server runs.
+// A small command-line helper that prepares and inspects the test database. It
+// runs in plain Node (not inside Jest), the same way the real server runs.
 //
 // Usage: node tests/support/dbTool.js <command>   (JSON input on stdin)
-//   reset                clears the events and registrations of the test database
-//   insertEvents         inserts the events given as a JSON array
+//   reset                 clears the events and registrations of the test database
+//   insertEvents          inserts events given as a JSON array, returns their ids
+//   insertRawEvent        inserts one event document exactly as given (no schema rules)
+//   insertRegistrations   adds registrations: [{ eventId, count, firstAttendeeId }]
+//   getEvent              returns the stored event document for { id }
+//   countEvents           counts events matching a filter object
 const mongoose = require('mongoose');
 const Event = require('../../models/Event');
 
@@ -30,6 +34,38 @@ async function run(command, payload) {
 
       return { inserted: inserted.length, ids: inserted.map((event) => String(event._id)) };
     }
+
+    case 'insertRawEvent': {
+      const result = await Event.collection.insertOne({ ...payload, date: new Date(payload.date) });
+
+      return { id: String(result.insertedId) };
+    }
+
+    case 'insertRegistrations': {
+      const Registration = require('../../models/Registration');
+      const registrations = [];
+
+      for (const { eventId, count, firstAttendeeId } of payload) {
+        for (let index = 0; index < count; index += 1) {
+          registrations.push({ eventId, attendeeId: firstAttendeeId + index });
+        }
+      }
+
+      if (registrations.length > 0) {
+        await Registration.insertMany(registrations);
+      }
+
+      return { inserted: registrations.length };
+    }
+
+    case 'getEvent': {
+      const event = await Event.collection.findOne({ _id: new mongoose.Types.ObjectId(payload.id) });
+
+      return { event };
+    }
+
+    case 'countEvents':
+      return { count: await Event.collection.countDocuments(payload || {}) };
 
     default:
       throw new Error(`Unknown command "${command}".`);
