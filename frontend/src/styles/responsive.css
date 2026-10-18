@@ -1,0 +1,200 @@
+
+/* EMS-NFR-03: Responsive layout for Chromium browsers.
+   Complements the existing page-specific styles without replacing them. */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+}
+
+body {
+  overflow-wrap: anywhere;
+}
+
+.page,
+.section,
+.dash-page,
+.dash-inner,
+.event-details-card,
+.event-form-card,
+.auth-page,
+.auth-card,
+.footer,
+.footer-grid,
+.hero-inner,
+.split,
+.grid-cards,
+.masonry {
+  min-width: 0;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
+.event-grid {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 260px), 1fr)
+  );
+}
+
+.event-card,
+.event-fact,
+.event-details-card,
+.event-form-card,
+.auth-card {
+  overflow-wrap: anywhere;
+}
+
+.dash-header,
+.dash-actions,
+.event-form-actions,
+.cta-row {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+  .section {
+    padding-inline: 5%;
+  }
+
+  .split {
+    gap: 3rem;
+  }
+
+  .masonry {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    gap: 0.5rem;
+  }
+
+  .logo {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .dash-tabs {
+    flex-wrap: wrap;
+  }
+
+  .dash-header {
+    gap: 1rem;
+  }
+
+  .dash-actions {
+    gap: 0.5rem;
+  }
+
+  .event-empty,
+  .event-status,
+  .event-error {
+    padding: 1.25rem;
+  }
+
+  .section {
+    padding-inline: 5%;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: clamp(2.5rem, 10vw, 3.5rem);
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .stats {
+    gap: 1.5rem;
+  }
+
+  .stats strong {
+    font-size: 2rem;
+  }
+
+  .event-details-card,
+  .event-form-card,
+  .auth-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .event-card {
+    padding: 1.1rem;
+  }
+
+  .event-button,
+  .dash-logout {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .footer {
+    padding-inline: 5%;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav {
+    padding-inline: 4%;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .btn {
+    padding-inline: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .dash-tab {
+    padding-inline: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  .eyebrow {
+    letter-spacing: 0.15em;
+  }
+}
+
+@media (min-width: 1600px) {
+  .dash-inner {
+    margin-inline: auto;
+  }
+
+  .event-details-card,
+  .event-form-card,
+  .auth-card {
+    margin-inline: auto;
+  }
+}
