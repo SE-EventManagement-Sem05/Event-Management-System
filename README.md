@@ -13,7 +13,7 @@ Docs: SRS, SAD, STP. Traceability: `Deliverable 1/testplan.md`.
 **Terminal 1: API**
 ```bash
 cd backend
-cp .env.example .env        # then edit JWT_SECRET (see comment inside the file)
+cp .env.example .env        # then edit JWT_SECRET, SQLITE_PATH, PORT and MONGODB_URI accordingly (see comment inside the file)
 npm install
 npm run dev                 # http://localhost:5000/api/health
 ```
