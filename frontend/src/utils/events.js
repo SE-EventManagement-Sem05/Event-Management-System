@@ -104,3 +104,21 @@ export async function updateHostEvent(id, payload) {
   });
   return data.event;
 }
+
+export async function fetchAttendeeEvent(id) {
+  const data = await authorizedRequest(
+    `/events/${encodeURIComponent(id)}`
+  );
+
+  return data.event;
+}
+
+export async function submitEventReview(id, payload) {
+  return authorizedRequest(
+    `/events/${encodeURIComponent(id)}/reviews`,
+    {
+      method: 'POST',
+      body: payload,
+    }
+  );
+}

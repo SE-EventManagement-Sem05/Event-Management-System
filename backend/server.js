@@ -13,7 +13,10 @@ const {
   updateEvent,
 } = require('./controllers/eventController');
 
-
+const {
+  getEventForReview,
+  createReview,
+} = require('./controllers/reviewController');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -185,6 +188,21 @@ function requireRole(role) {
     return next();
   };
 }
+
+// -------------------- EVENT REVIEWS (EMS-FR-12) --------------------
+
+app.get(
+  '/api/events/:id',
+  authenticateToken,
+  getEventForReview
+);
+
+app.post(
+  '/api/events/:id/reviews',
+  authenticateToken,
+  requireRole('attendee'),
+  createReview
+);
 
 // -------------------- PROTECTED DASHBOARD APIs --------------------
 
