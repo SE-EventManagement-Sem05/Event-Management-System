@@ -123,6 +123,9 @@ describe('EMS-FR-06 event details', () => {
       price: 499.99,
       capacity: 150,
       registeredCount: 3,
+      averageRating: null,
+      reviewCount: 0,
+      reviews: [],
     });
   });
 
@@ -130,12 +133,15 @@ describe('EMS-FR-06 event details', () => {
     const response = await get(`${URL}/${ids.main}`, hostA.token).expect(200);
 
     expect(Object.keys(response.body.event).sort()).toEqual([
+      'averageRating',
       'capacity',
       'date',
       'description',
       'id',
       'price',
       'registeredCount',
+      'reviewCount',
+      'reviews',
       'title',
       'venue',
     ]);
