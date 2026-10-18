@@ -4,6 +4,7 @@ import { SessionExpiredError, fetchHostEvent } from '../utils/events.js';
 import { formatCapacity, formatEventDate, formatPrice } from '../utils/eventFormat.js';
 import '../styles/events.css';
 import '../styles/eventdetails.css';
+import ReviewSection from '../components/ReviewSection.jsx';
 
 export default function EventDetails() {
   const { id } = useParams();
@@ -118,6 +119,11 @@ export default function EventDetails() {
 
         <h2 className="event-description-title">Description</h2>
         <p className="event-description">{event.description}</p>
+        <ReviewSection
+          averageRating={event.averageRating}
+          reviewCount={event.reviewCount}
+          reviews={event.reviews}
+        />
       </>
     );
   }

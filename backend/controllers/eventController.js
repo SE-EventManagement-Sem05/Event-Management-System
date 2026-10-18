@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Event = require('../models/Event');
 const Registration = require('../models/Registration');
 const { validateEventInput } = require('../validators/eventValidator');
-
+const { getReviewSummary } = require('./reviewController');
 
 const STATUSES = ['upcoming', 'past'];
 const DEFAULT_LIMIT = 6;
@@ -145,9 +145,17 @@ async function getHostEvent(req, res) {
 
     if (!event) return undefined;
 
-    const registeredCount = await Registration.countDocuments({ eventId: event._id });
+    const [registeredCount, reviewSummary] = await Promise.all([
+      Registration.countDocuments({ eventId: event._id }),
+      getReviewSummary(event._id),
+    ]);
 
-    return res.status(200).json({ event: toEventDetails(event, registeredCount) });
+    return res.status(200).json({
+      event: {
+        ...toEventDetails(event, registeredCount),
+        ...reviewSummary,
+      },
+    });
   } catch (error) {
     console.error('Get event error:', error.message);
 
