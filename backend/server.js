@@ -244,7 +244,6 @@ app.get(
   getHostEvent
 );
 
-
 app.post(
   '/api/host/events',
   authenticateToken,
@@ -258,6 +257,48 @@ app.put(
   requireRole('host'),
   updateEvent
 );
+
+// -------------------- ERROR HANDLING --------------------
+
+app.use((req, res) => {
+  return res.status(404).json({
+    status: 'error',
+    code: 'ROUTE_NOT_FOUND',
+    message: 'The requested page or resource could not be found.',
+  });
+});
+
+app.use((error, req, res, next) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+
+  // Handle body-parser JSON syntax error (malformed JSON -> 400)
+  if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
+    return res.status(400).json({
+      status: 'error',
+      code: 'BAD_REQUEST',
+      message: 'Malformed JSON in request body.',
+    });
+  }
+
+  // Handle request entity too large error (payload too large -> 413)
+  if (error.status === 413 || error.type === 'entity.too.large') {
+    return res.status(413).json({
+      status: 'error',
+      code: 'REQUEST_ENTITY_TOO_LARGE',
+      message: 'Request entity too large.',
+    });
+  }
+
+  console.error('Unhandled server error:', error.message);
+
+  return res.status(500).json({
+    status: 'error',
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'Something went wrong on our server. Please try again.',
+  });
+});
 
 // -------------------- START SERVER --------------------
 

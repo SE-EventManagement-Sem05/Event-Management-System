@@ -2,12 +2,13 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
 import ProtectedRoute from './ProtectedRoute.jsx';
+import { useLocation } from 'react-router-dom';
 
 function renderProtected(role) {
   return render(
     <MemoryRouter initialEntries={['/secret']}>
       <Routes>
-        <Route path="/login" element={<p>LOGIN PAGE</p>} />
+        <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute role={role} />}>
           <Route path="/secret" element={<p>SECRET CONTENT</p>} />
         </Route>
@@ -19,6 +20,18 @@ function renderProtected(role) {
 function startSession(role) {
   sessionStorage.setItem('token', 'jwt-token');
   sessionStorage.setItem('user', JSON.stringify({ id: 1, name: 'T', role }));
+}
+function LoginPage() {
+  const location = useLocation();
+
+  return (
+    <div>
+      <p>LOGIN PAGE</p>
+      {location.state?.message && (
+        <p role="alert">{location.state.message}</p>
+      )}
+    </div>
+  );
 }
 
 describe('EMS-FR-04 ProtectedRoute', () => {
@@ -65,5 +78,36 @@ describe('EMS-FR-04 ProtectedRoute', () => {
     renderProtected('host');
 
     expect(await screen.findByRole('alert')).toHaveTextContent(/unable to verify your session/i);
+  });
+
+    test('redirects with an explanation when the token is expired', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 401,
+    });
+    startSession('host');
+
+    renderProtected('host');
+
+    expect(await screen.findByText('LOGIN PAGE')).toBeInTheDocument();
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      /session.*expired|invalid/i
+    );
+    expect(sessionStorage.getItem('token')).toBeNull();
+  });
+
+  test('does not log the user out for a 403 permission response', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 403,
+    });
+    startSession('host');
+
+    renderProtected('host');
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      /unable to verify your session/i
+    );
+    expect(sessionStorage.getItem('token')).toBe('jwt-token');
   });
 });

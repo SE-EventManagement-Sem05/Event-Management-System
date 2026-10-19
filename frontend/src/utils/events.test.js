@@ -69,13 +69,12 @@ describe('EMS-FR-06 fetchHostEvent', () => {
   });
 
   test('an error without a JSON body gets a default message', async () => {
-    globalThis.fetch = vi.fn().mockResolvedValue(response(500, undefined));
+      globalThis.fetch = vi.fn().mockResolvedValue(response(500, undefined));
 
-    await expect(fetchHostEvent('abc')).rejects.toMatchObject({
-      status: 500,
-      message: 'Unable to complete the request. Please try again.',
+      const error = await fetchHostEvent('abc').catch(e => e);
+      expect(error.status).toBe(500);
+      expect(error.message).toBe('Something went wrong on our server. Please try again.');
     });
-  });
 
   test('a network failure becomes an ApiError with status 0', async () => {
     globalThis.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
@@ -85,6 +84,30 @@ describe('EMS-FR-06 fetchHostEvent', () => {
       message: 'Unable to connect to the server. Please try again.',
     });
   });
+
+    test('uses a friendly fallback when the server returns an unexpected error', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(
+      response(500, { message: 'Something went wrong on our server. Please try again.' })
+    );
+
+    await expect(fetchHostEvent('abc')).rejects.toMatchObject({
+      status: 500,
+      message: 'Something went wrong on our server. Please try again.',
+    });
+  });
+
+  test('a 403 does not clear the authenticated session', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(
+      response(403, { message: 'You do not have permission to perform this action.' })
+    );
+
+    await expect(fetchHostEvent('abc')).rejects.toMatchObject({
+      status: 403,
+    });
+
+    expect(sessionStorage.getItem('token')).toBe('jwt-token');
+  });
+  
 });
 
 describe('EMS-FR-07 createHostEvent and updateHostEvent', () => {

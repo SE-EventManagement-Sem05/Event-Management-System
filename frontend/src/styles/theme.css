@@ -124,3 +124,30 @@ img, svg { max-width: 100%; }
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* Consistent application messages */
+.app-message {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-2);
+}
+
+.app-message p {
+  margin-bottom: 0.75rem;
+}
+
+.app-message-error {
+  border-color: var(--danger);
+  color: var(--text);
+}
+
+.app-message-success {
+  border-color: var(--ok);
+  color: var(--text);
+}
+
+.app-message button {
+  margin-top: 0.25rem;
+}
