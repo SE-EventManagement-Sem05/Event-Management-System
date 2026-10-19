@@ -37,10 +37,15 @@ export default function ProtectedRoute({ role }) {
 
         if (cancelled) return;
 
-        if (response.status === 401 || response.status === 403) {
+        if (response.status === 401) {
           sessionStorage.removeItem('token');
           sessionStorage.removeItem('user');
           setStatus('unauthorized');
+          return;
+        }
+
+        if (response.status === 403) {
+          setStatus('error');
           return;
         }
 
@@ -65,7 +70,17 @@ export default function ProtectedRoute({ role }) {
   }, [role, token, userData]);
 
   if (!token || !user || user.role !== role || status === 'unauthorized') {
-    return <Navigate to="/login" replace />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{
+          message: status === 'unauthorized'
+            ? 'Your session is missing, invalid, or expired. Please log in again.'
+            : undefined,
+        }}
+      />
+    );
   }
 
   if (status === 'checking') {
