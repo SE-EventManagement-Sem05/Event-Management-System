@@ -12,6 +12,7 @@ import {
   formatPrice,
 } from '../utils/eventFormat.js';
 import ReviewSection from '../components/ReviewSection.jsx';
+import ErrorMessage from '../components/ErrorMessage.jsx';
 import '../styles/events.css';
 import '../styles/eventdetails.css';
 
@@ -94,19 +95,15 @@ export default function AttendeeEventDetails() {
             Back to dashboard
           </Link>
 
-          <div className="event-error" role="alert">
-            <p>{error.message || 'Unable to load the event.'}</p>
-
-            {canRetry && (
-              <button
-                type="button"
-                className="event-button"
-                onClick={() => setReloadKey((key) => key + 1)}
-              >
-                Try again
-              </button>
-            )}
-          </div>
+          <ErrorMessage
+            message={error.message || 'Unable to load the event. Please try again.'}
+            onRetry={
+              canRetry
+                ? () => setReloadKey((key) => key + 1)
+                : undefined
+            }
+            retryLabel="Try again"
+          />
         </div>
       </section>
     );

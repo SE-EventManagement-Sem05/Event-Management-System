@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_BASE, saveSession } from '../utils/auth.js';
 import '../styles/signup.css';
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const sessionMessage = location.state?.message || '';
 
   const [formData, setFormData] = useState({
     role: 'attendee',
@@ -98,6 +100,11 @@ export default function Login() {
         </header>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          {sessionMessage && (
+            <p className="form-error" role="alert">
+              {sessionMessage}
+            </p>
+          )}
           <div className="form-group">
             <label className="form-label" htmlFor="role">Sign in as</label>
             <select

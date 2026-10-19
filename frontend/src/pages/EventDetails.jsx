@@ -5,6 +5,7 @@ import { formatCapacity, formatEventDate, formatPrice } from '../utils/eventForm
 import '../styles/events.css';
 import '../styles/eventdetails.css';
 import ReviewSection from '../components/ReviewSection.jsx';
+import ErrorMessage from '../components/ErrorMessage.jsx';
 
 export default function EventDetails() {
   const { id } = useParams();
@@ -58,20 +59,17 @@ export default function EventDetails() {
 
   if (error) {
     content = (
-      <div className="event-error" role="alert">
-        <p>{error.message || 'Unable to load the event. Please try again.'}</p>
-        {canRetry && (
-          <button
-            type="button"
-            className="event-button"
-            onClick={() => setReloadKey((key) => key + 1)}
-          >
-            Try again
-          </button>
-        )}
-      </div>
+      <ErrorMessage
+        message={error.message || 'Unable to load the event. Please try again.'}
+        onRetry={
+          !error.status || error.status >= 500
+            ? () => setReloadKey((key) => key + 1)
+            : undefined
+        }
+        retryLabel="Retry"
+      />
     );
-  } else if (!event) {
+}else if (!event) {
     content = (
       <p className="event-status" role="status">
         Loading event…
