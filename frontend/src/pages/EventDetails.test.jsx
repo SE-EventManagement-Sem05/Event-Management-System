@@ -158,7 +158,7 @@ describe('EMS-FR-06 Event details page', () => {
       await screen.findByText('Unable to connect to the server. Please try again.')
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /try again/i }));
+    await user.click(screen.getByRole('button', { name: /retry/i }));
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Design Summit' })).toBeInTheDocument();
   });
