@@ -17,6 +17,7 @@ const {
   getEventForReview,
   createReview,
 } = require('./controllers/reviewController');
+const { registerForEvent } = require('./controllers/registrationController');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -256,6 +257,15 @@ app.put(
   authenticateToken,
   requireRole('host'),
   updateEvent
+);
+
+// -------------------- ATTENDEE EVENT REGISTRATION (EMS-FR-10) --------------------
+
+app.post(
+  '/api/attendee/events/:id/register',
+  authenticateToken,
+  requireRole('attendee'),
+  registerForEvent
 );
 
 // -------------------- ERROR HANDLING --------------------

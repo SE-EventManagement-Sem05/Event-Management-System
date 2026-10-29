@@ -1,3 +1,4 @@
+
 // A small command-line helper that prepares and inspects the test database. It
 // runs in plain Node (not inside Jest), the same way the real server runs.
 //
@@ -8,6 +9,7 @@
 //   insertRegistrations   adds registrations: [{ eventId, count, firstAttendeeId }]
 //   getEvent              returns the stored event document for { id }
 //   countEvents           counts events matching a filter object
+//   countRegistrations    counts registrations for an event
 const mongoose = require('mongoose');
 const Event = require('../../models/Event');
 
@@ -29,14 +31,23 @@ async function run(command, payload) {
       return { ok: true };
 
     case 'insertEvents': {
-      const events = payload.map((event) => ({ ...event, date: new Date(event.date) }));
+      const events = payload.map((event) => ({
+        ...event,
+        date: new Date(event.date),
+      }));
       const inserted = await Event.insertMany(events);
 
-      return { inserted: inserted.length, ids: inserted.map((event) => String(event._id)) };
+      return {
+        inserted: inserted.length,
+        ids: inserted.map((event) => String(event._id)),
+      };
     }
 
     case 'insertRawEvent': {
-      const result = await Event.collection.insertOne({ ...payload, date: new Date(payload.date) });
+      const result = await Event.collection.insertOne({
+        ...payload,
+        date: new Date(payload.date),
+      });
 
       return { id: String(result.insertedId) };
     }
@@ -47,7 +58,10 @@ async function run(command, payload) {
 
       for (const { eventId, count, firstAttendeeId } of payload) {
         for (let index = 0; index < count; index += 1) {
-          registrations.push({ eventId, attendeeId: firstAttendeeId + index });
+          registrations.push({
+            eventId,
+            attendeeId: firstAttendeeId + index,
+          });
         }
       }
 
@@ -59,13 +73,27 @@ async function run(command, payload) {
     }
 
     case 'getEvent': {
-      const event = await Event.collection.findOne({ _id: new mongoose.Types.ObjectId(payload.id) });
+      const event = await Event.collection.findOne({
+        _id: new mongoose.Types.ObjectId(payload.id),
+      });
 
       return { event };
     }
 
     case 'countEvents':
-      return { count: await Event.collection.countDocuments(payload || {}) };
+      return {
+        count: await Event.collection.countDocuments(payload || {}),
+      };
+
+    case 'countRegistrations': {
+      const Registration = require('../../models/Registration');
+
+      return {
+        count: await Registration.countDocuments({
+          eventId: payload.eventId,
+        }),
+      };
+    }
 
     default:
       throw new Error(`Unknown command "${command}".`);
@@ -76,7 +104,9 @@ async function main() {
   const command = process.argv[2];
   const payload = await readStdin();
 
-  await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 15000 });
+  await mongoose.connect(process.env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 15000,
+  });
 
   const databaseName = mongoose.connection.name;
 
