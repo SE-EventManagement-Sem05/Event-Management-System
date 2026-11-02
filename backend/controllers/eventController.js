@@ -239,4 +239,72 @@ async function updateEvent(req, res) {
   }
 }
 
-module.exports = { listHostEvents, getHostEvent, createEvent, updateEvent };
+
+async function listAttendeeEvents(req, res) {
+  const { status } = req.query;
+  const page = parsePositiveInt(req.query.page, 1, MAX_PAGE);
+  const limit = parsePositiveInt(req.query.limit, DEFAULT_LIMIT, MAX_LIMIT);
+
+  if (!STATUSES.includes(status)) {
+    return res.status(400).json({
+      message: 'Query parameter "status" must be "upcoming" or "past".',
+    });
+  }
+
+  if (page === null || limit === null) {
+    return res.status(400).json({
+      message: `"page" must be a positive integer and "limit" must be between 1 and ${MAX_LIMIT}.`,
+    });
+  }
+
+  if (!databaseIsUp()) {
+    return sendUnavailable(res);
+  }
+
+  try {
+    const now = new Date();
+    const isUpcoming = status === 'upcoming';
+
+    const filter = {
+      date: isUpcoming ? { $gte: now } : { $lt: now },
+    };
+
+    const sort = isUpcoming
+      ? { date: 1, _id: 1 }
+      : { date: -1, _id: -1 };
+
+    const [total, events] = await Promise.all([
+      Event.countDocuments(filter),
+      Event.find(filter)
+        .sort(sort)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .select('title description date venue price capacity')
+        .lean(),
+    ]);
+
+    return res.status(200).json({
+      status,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      events,
+    });
+  } catch (error) {
+    console.error('List attendee events error:', error.message);
+
+    return res.status(500).json({
+      message: 'Unable to load events. Please try again.',
+    });
+  }
+}
+
+
+module.exports = {
+  listHostEvents,
+  listAttendeeEvents,
+  getHostEvent,
+  createEvent,
+  updateEvent,
+};
