@@ -8,6 +8,7 @@ const db = require('./db');
 const connectMongo = require('./mongo');
 const {
   listHostEvents,
+  listAttendeeEvents,
   getHostEvent,
   createEvent,
   updateEvent,
@@ -257,6 +258,16 @@ app.put(
   requireRole('host'),
   updateEvent
 );
+
+ // -------------------- ATTENDEE EVENTS (EMS-FR-08) --------------------
+
+app.get(
+  '/api/attendee/events',
+  authenticateToken,
+  requireRole('attendee'),
+  listAttendeeEvents
+);
+
 
 // -------------------- ERROR HANDLING --------------------
 
