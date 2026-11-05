@@ -75,6 +75,7 @@ export default function Login() {
       }
 
       saveSession(data.token, data.user);
+      window.dispatchEvent(new Event('auth-change'));
       navigate(
         data.user.role === 'host' ? '/host/dashboard' : '/attendee/dashboard',
         { replace: true }
