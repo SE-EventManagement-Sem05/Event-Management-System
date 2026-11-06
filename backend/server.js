@@ -278,6 +278,16 @@ app.post(
   registerForEvent
 );
 
+ // -------------------- ATTENDEE EVENTS (EMS-FR-08) --------------------
+
+app.get(
+  '/api/attendee/events',
+  authenticateToken,
+  requireRole('attendee'),
+  listAttendeeEvents
+);
+
+
 // -------------------- ERROR HANDLING --------------------
 
 app.use((req, res) => {
