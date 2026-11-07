@@ -82,6 +82,27 @@ export async function fetchHostEvent(id) {
   return data.event;
 }
 
+export async function fetchAttendeeEvents({
+  status = 'upcoming',
+  page = 1,
+  limit = 6,
+  location = '',
+  interest = '',
+  category = '',
+}) {
+  const params = new URLSearchParams({
+    status,
+    page: String(page),
+    limit: String(limit),
+  });
+
+  if (location.trim()) params.set('location', location.trim());
+  if (interest.trim()) params.set('interest', interest.trim());
+  if (category.trim()) params.set('category', category.trim());
+
+  return authorizedRequest(`/attendee/events?${params}`);
+}
+
 export async function createHostEvent(payload) {
   const data = await authorizedRequest('/host/events', { method: 'POST', body: payload });
   return data.event;

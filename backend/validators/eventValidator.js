@@ -1,14 +1,15 @@
+
 const LIMITS = {
   title: 120,
   description: 2000,
   venue: 200,
+  category: 50,
   maxPrice: 1000000,
   maxCapacity: 100000,
   maxYear: 2100,
 };
 
-// The API accepts dates only as UTC ISO strings, e.g. 2030-06-15T10:30:00.000Z
-// (what Date.prototype.toISOString() produces).
+// The API accepts dates only as UTC ISO strings.
 const ISO_UTC = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
 function validateText(input, field, label, max, errors) {
@@ -45,8 +46,8 @@ function validateDate(input, existingDate, now, errors) {
     return undefined;
   }
 
-  // An edit may keep the stored date even if it is now in the past.
-  const unchanged = existingDate && parsed.getTime() === existingDate.getTime();
+  const unchanged =
+    existingDate && parsed.getTime() === existingDate.getTime();
 
   if (!unchanged && parsed.getTime() <= now.getTime()) {
     errors.date = 'Event date and time must be in the future.';
@@ -99,17 +100,39 @@ function validateCapacity(input, errors) {
   return input;
 }
 
-// Whitelists the writable fields, so fields such as hostId or _id in the
-// request body can never reach the database.
 function validateEventInput(body, { existingDate = null, now = new Date() } = {}) {
-  const input = body && typeof body === 'object' && !Array.isArray(body) ? body : {};
+  const input =
+    body && typeof body === 'object' && !Array.isArray(body) ? body : {};
+
   const errors = {};
+
+  const category =
+    input.category === undefined || input.category === null
+      ? ''
+      : input.category;
+
+  let validatedCategory = '';
+
+  if (typeof category !== 'string') {
+    errors.category = 'Category must be text.';
+  } else if (category.trim().length > LIMITS.category) {
+    errors.category = `Category must be ${LIMITS.category} characters or fewer.`;
+  } else {
+    validatedCategory = category.trim();
+  }
 
   const value = {
     title: validateText(input.title, 'title', 'Title', LIMITS.title, errors),
-    description: validateText(input.description, 'description', 'Description', LIMITS.description, errors),
+    description: validateText(
+      input.description,
+      'description',
+      'Description',
+      LIMITS.description,
+      errors
+    ),
     date: validateDate(input.date, existingDate, now, errors),
     venue: validateText(input.venue, 'venue', 'Venue', LIMITS.venue, errors),
+    category: validatedCategory,
     price: validatePrice(input.price, errors),
     capacity: validateCapacity(input.capacity, errors),
   };

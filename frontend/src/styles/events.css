@@ -179,3 +179,88 @@
     padding-inline: 5%;
   }
 }
+
+
+/* EMS-FR-09: Attendee event search */
+
+.event-search-panel {
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.event-search-panel h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.event-search-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.event-search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.event-search-field label {
+  color: var(--gold-soft);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.event-search-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-2);
+  color: var(--text);
+  font: 400 0.9rem var(--sans);
+}
+
+.event-search-field input::placeholder {
+  color: var(--text-2);
+  opacity: 0.7;
+}
+
+.event-search-field input:focus {
+  border-color: var(--gold);
+  outline: none;
+}
+
+.event-search-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .event-search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .event-search-panel {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-search-actions {
+    flex-direction: column;
+  }
+
+  .event-search-actions .btn {
+    width: 100%;
+  }
+}

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+﻿import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApiValidationError, SessionExpiredError } from '../utils/events.js';
 import { toPayload, validateEventForm } from '../utils/eventForm.js';
@@ -19,7 +19,7 @@ export default function EventForm({
   initialValues,
   originalEvent = null,
   submitLabel,
-  savingLabel = 'Saving…',
+  savingLabel = 'SavingΓÇª',
   onSubmit,
   onSessionExpired,
 }) {
@@ -112,6 +112,20 @@ export default function EventForm({
         <label className="form-label" htmlFor="venue">Venue</label>
         <input type="text" className="form-input" placeholder="Where will it take place?" {...inputProps('venue')} />
         <FieldError id="venue" message={errors.venue} />
+      </div>
+
+            <div className="form-group">
+        <label className="form-label" htmlFor="category">
+          Category
+        </label>
+        <input
+          type="text"
+          className="form-input"
+          placeholder="e.g. Technology, Music, Sports"
+          maxLength={50}
+          {...inputProps('category')}
+        />
+        <FieldError id="category" message={errors.category} />
       </div>
 
       <div className="event-form-row">
