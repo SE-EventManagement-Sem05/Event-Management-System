@@ -85,29 +85,34 @@ async function getEventForReview(req, res) {
     const reviewSummary = await getReviewSummary(event._id);
     const isPastEvent = event.date < new Date();
 
+    let isRegistered = false;
     let canReview = false;
     let hasReviewed = false;
 
-    if (req.user.role === 'attendee' && isPastEvent) {
-      const [registration, existingReview] = await Promise.all([
-        Registration.findOne({
-          eventId: event._id,
-          attendeeId: req.user.id,
-        }).select('_id').lean(),
-        Review.findOne({
-          eventId: event._id,
-          attendeeId: req.user.id,
-        }).select('_id').lean(),
-      ]);
+    if (req.user.role === 'attendee') {
+      const registration = await Registration.findOne({
+        eventId: event._id,
+        attendeeId: req.user.id,
+      }).select('_id').lean();
 
-      hasReviewed = Boolean(existingReview);
-      canReview = Boolean(registration) && !hasReviewed;
+      isRegistered = Boolean(registration);
+
+      if (isPastEvent) {
+        const existingReview = await Review.findOne({
+          eventId: event._id,
+          attendeeId: req.user.id,
+        }).select('_id').lean();
+
+        hasReviewed = Boolean(existingReview);
+        canReview = isRegistered && !hasReviewed;
+      }
     }
 
     return res.status(200).json({
       event: {
         ...toPublicEvent(event),
         ...reviewSummary,
+        ...(req.user.role === 'attendee' ? { isRegistered } : {}),
         canReview,
         hasReviewed,
       },
