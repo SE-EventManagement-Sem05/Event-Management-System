@@ -112,3 +112,10 @@ export async function submitEventReview(id, payload) {
     }
   );
 }
+
+export async function registerForEvent(id) {
+  return authorizedRequest(
+    `/attendee/events/${encodeURIComponent(id)}/register`,
+    { method: 'POST' }
+  );
+}
