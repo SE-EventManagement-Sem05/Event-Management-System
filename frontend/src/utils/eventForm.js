@@ -1,7 +1,9 @@
+
 export const LIMITS = {
   title: 120,
   description: 2000,
   venue: 200,
+  category: 50,
   maxPrice: 1000000,
   maxCapacity: 100000,
   maxYear: 2100,
@@ -12,6 +14,7 @@ export const EMPTY_FORM = {
   description: '',
   date: '',
   venue: '',
+  category: '',
   price: '',
   capacity: '',
 };
@@ -33,20 +36,25 @@ export function toLocalInputValue(iso) {
 }
 
 export function toFormValues(event) {
-  const text = (value) => (value === undefined || value === null ? '' : String(value));
+  const text = (value) =>
+    value === undefined || value === null ? '' : String(value);
 
   return {
     title: text(event.title),
     description: text(event.description),
     date: toLocalInputValue(event.date),
     venue: text(event.venue),
+    category: text(event.category),
     price: text(event.price),
     capacity: text(event.capacity),
   };
 }
 
 function isDateUnchanged(values, originalEvent) {
-  return Boolean(originalEvent) && toLocalInputValue(originalEvent.date) === values.date;
+  return (
+    Boolean(originalEvent) &&
+    toLocalInputValue(originalEvent.date) === values.date
+  );
 }
 
 function checkText(values, field, label, max, errors) {
@@ -59,12 +67,19 @@ function checkText(values, field, label, max, errors) {
   }
 }
 
-export function validateEventForm(values, { originalEvent = null, now = new Date() } = {}) {
+export function validateEventForm(
+  values,
+  { originalEvent = null, now = new Date() } = {}
+) {
   const errors = {};
 
   checkText(values, 'title', 'Title', LIMITS.title, errors);
   checkText(values, 'description', 'Description', LIMITS.description, errors);
   checkText(values, 'venue', 'Venue', LIMITS.venue, errors);
+
+  if ((values.category ?? '').trim().length > LIMITS.category) {
+    errors.category = `Category must be ${LIMITS.category} characters or fewer.`;
+  }
 
   if (!values.date) {
     errors.date = 'Date and time are required.';
@@ -78,7 +93,10 @@ export function validateEventForm(values, { originalEvent = null, now = new Date
 
     if (!isValid) {
       errors.date = 'Enter a valid date and time.';
-    } else if (!isDateUnchanged(values, originalEvent) && parsed.getTime() <= now.getTime()) {
+    } else if (
+      !isDateUnchanged(values, originalEvent) &&
+      parsed.getTime() <= now.getTime()
+    ) {
       errors.date = 'Event date and time must be in the future.';
     }
   }
@@ -99,7 +117,10 @@ export function validateEventForm(values, { originalEvent = null, now = new Date
     errors.capacity = 'Capacity is required.';
   } else if (!WHOLE_NUMBER.test(capacity)) {
     errors.capacity = 'Capacity must be a whole number.';
-  } else if (Number(capacity) < 1 || Number(capacity) > LIMITS.maxCapacity) {
+  } else if (
+    Number(capacity) < 1 ||
+    Number(capacity) > LIMITS.maxCapacity
+  ) {
     errors.capacity = 'Capacity must be between 1 and 100,000.';
   }
 
@@ -118,6 +139,9 @@ export function toPayload(values, originalEvent = null) {
     description: values.description.trim(),
     date,
     venue: values.venue.trim(),
+    ...((values.category ?? '').trim()
+  ? { category: values.category.trim() }
+  : {}),
     price: Number(values.price),
     capacity: Number(values.capacity),
   };

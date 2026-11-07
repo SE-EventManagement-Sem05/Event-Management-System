@@ -28,28 +28,27 @@ export default function App() {
             element={<HostDashboard />}
           />
           <Route
-            path="/attendee/events/:id"
-            element={<AttendeeEventDetails />}
+            path="/host/events/:id"
+            element={<EventDetails />}
           />
-          <Route 
-            path="/host/events/:id" 
-            element={<EventDetails />} 
+          <Route
+            path="/host/events/new"
+            element={<CreateEvent />}
           />
-          <Route 
-            path="/host/events/new" 
-            element={<CreateEvent />} 
+          <Route
+            path="/host/events/:id/edit"
+            element={<EditEvent />}
           />
-          <Route 
-            path="/host/events/:id/edit" 
-            element={<EditEvent />} 
-          />
-
         </Route>
 
         <Route element={<ProtectedRoute role="attendee" />}>
           <Route
             path="/attendee/dashboard"
             element={<AttendeeDashboard />}
+          />
+          <Route
+            path="/attendee/events/:id"
+            element={<AttendeeEventDetails />}
           />
         </Route>
 
