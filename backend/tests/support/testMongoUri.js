@@ -4,8 +4,6 @@ const dotenv = require('dotenv');
 
 const DEFAULT_TEST_DATABASE = 'ems_test';
 
-// Replaces the database name in a MongoDB connection string and keeps the
-// host, credentials and options (works for mongodb:// and mongodb+srv://).
 function withDatabase(uri, databaseName) {
   const match = /^(mongodb(?:\+srv)?:\/\/[^/?]+)(\/[^?]*)?(\?.*)?$/.exec(uri);
 
@@ -18,36 +16,48 @@ function withDatabase(uri, databaseName) {
 
 function databaseNameOf(uri) {
   const match = /^mongodb(?:\+srv)?:\/\/[^/?]+\/([^?]*)/.exec(uri);
-
   return match ? decodeURIComponent(match[1]) : '';
 }
 
-// The tests use the same MongoDB server as the real application (MONGODB_URI in
-// backend/.env) but always a separate database, so development data is never touched.
-// Set TEST_MONGODB_URI to use a different server; its database name must end in _test.
-function resolveTestMongoUri(envFile = path.join(__dirname, '..', '..', '.env')) {
+function resolveTestMongoUri(
+  envFile = path.join(__dirname, '..', '..', '.env'),
+  databaseName
+) {
   let uri;
+
+  let selectedDatabase;
 
   if (process.env.TEST_MONGODB_URI) {
     uri = process.env.TEST_MONGODB_URI;
+    selectedDatabase =
+      databaseName ||
+      process.env.TEST_DB_NAME ||
+      databaseNameOf(uri) ||
+      DEFAULT_TEST_DATABASE;
   } else {
-    const parsed = fs.existsSync(envFile) ? dotenv.parse(fs.readFileSync(envFile)) : {};
+    const parsed = fs.existsSync(envFile)
+      ? dotenv.parse(fs.readFileSync(envFile))
+      : {};
 
     if (!parsed.MONGODB_URI) {
       throw new Error(
         'MONGODB_URI is not set in backend/.env. The tests use the same MongoDB server as the application ' +
-          '(with a separate "ems_test" database), or set TEST_MONGODB_URI.'
+          '(with a separate test database), or set TEST_MONGODB_URI.'
       );
     }
 
-    uri = withDatabase(parsed.MONGODB_URI, process.env.TEST_DB_NAME || DEFAULT_TEST_DATABASE);
+    uri = parsed.MONGODB_URI;
+    selectedDatabase =
+      databaseName || process.env.TEST_DB_NAME || DEFAULT_TEST_DATABASE;
   }
 
-  const databaseName = databaseNameOf(uri);
+  uri = withDatabase(uri, selectedDatabase);
 
-  if (!databaseName.endsWith('_test')) {
+  const resolvedName = databaseNameOf(uri);
+
+  if (!resolvedName.endsWith('_test')) {
     throw new Error(
-      `Refusing to run the tests on database "${databaseName}": the test database name must end in _test.`
+      `Refusing to run the tests on database "${resolvedName}": the test database name must end in _test.`
     );
   }
 

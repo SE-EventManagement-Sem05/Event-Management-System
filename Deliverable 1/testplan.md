@@ -3,18 +3,18 @@
 | | |
 |---|---|
 | **Project** | Event Management System |
-| **Version** | 1.0 |
+| **Version** | 1.1 (updated for Sprint 1 and Sprint 2 implementation) |
 | **Authors** | Piya, Sharanya, Ananya |
-| **Date** | 28-09-2026 |
-| **Status** | Sample / Draft |
+| **Date** | 28-09-2026 (v1.0), revised 08-11-2026 (v1.1) |
+| **Status** | Partially outlined testcases |
 
 ---
 
 ## 1. Introduction
 
-**Purpose:** This document defines the test plan for the Event Management System v1.0. It outlines objectives, scope, strategy, resources, schedule, and responsibilities for testing.
+**Purpose:** This document defines the test plan for the Event Management System v1.0. It outlines objectives, scope, strategy, resources, schedule, and responsibilities for testing. The updated version 1.1 outlines the exact test cases followed successfully. There are 403 test cases which have been included for FR-01, FR-03, FR-05, FR-06, FR-07, FR-12, FR-14, NFR-01, NFR-05, NFR-03.
 
-**Scope:** Testing covers Event Management System features such as authentication, registration, dashboards (role wise), event creation and management, event search and filtering, event browsing and recommendations, simulation of payment, ratings and review, statistics for the host, error handling and security. Actual processing of payment and integration of payment services, cloud based infrastructure and scaling are excluded.
+**Scope:** Testing covers Event Management System features such as landing page, signup, role-based login with JWT, dashboards and route-protection, host event list, host event creation and details, and for error handling. Currently there are about 284 tests for backend and 194 for frontend. Further tests have to be implemented yet.
 
 **References:** EMS SRS v1.0, EMS Software Architecture and Design Specification v1.0.
 
@@ -37,14 +37,22 @@
 
 ## 2. Test Items
 
-- Frontend module
-- Authentication module
-- Event management module
-- Registration module
-- Review and rating module
-- Simulated payment and statistics module
-- Configuration module
-- Database module
+
+| Test item | Primary location | Planned automated suites |
+|-----------|------------------|--------------------------|
+| Frontend pages, components and utilities | `frontend/src` | `tests/frontend/*.test.jsx`, `tests/frontend/*.test.js` |
+| Authentication (signup, login, JWT, RBAC) | `backend/server.js`, `backend/db.js` | `tests/backend/auth.test.js`, `tests/backend/login.test.js` |
+| Event management (list, details, create, edit, validation) | `backend/controllers/eventController.js`, validators, models | `tests/backend/eventController.unit.test.js`, `hostEvents*.test.js`, `eventDetails*.test.js`, `eventManagement*.test.js` |
+| Review and rating module | `backend/controllers/reviewController.js`, models | `tests/backend/reviewController.unit.test.js`, `tests/backend/reviews.api.test.js` |
+| Configuration and environment | `backend/config.js`, `backend/mongo.js` | `tests/backend/config.unit.test.js`, `tests/backend/envConfig.test.js`, `tests/backend/mongo.unit.test.js` |
+| API error handling | Backend middleware / controllers | `tests/backend/errorResponses.api.test.js` |
+| Performance (page load + API latency) | Running system | `tests/performance/run-performance.mjs` |
+| Responsive layout | Frontend CSS + live pages | `tests/frontend/responsive.test.js`, `tests/responsive/verify-responsive.mjs` |
+
+Supporting helpers remain under `backend/tests/` (setupEnv, dbTool, testServer, helpers) and are not themselves counted as test cases.
+
+
+
 
 ---
 
@@ -77,7 +85,7 @@ Features mapped to SRS requirement IDs:
 | EMS-SEC-01 | Passwords are stored as salted bcrypt hashes |
 | EMS-SEC-02 | JWT expires within 60 mins, and invalid/expired tokens are rejected |
 | EMS-SEC-03 | Access control is done on the server side, according to the role |
-| EMS-SEC-04 | HTTPS is utilised throughout |
+| EMS-SEC-04 | HTTP is utilised throughout |
 | EMS-SEC-05 | Input is validated and sanitised |
 | EMS-SEC-06 | Login is locked out after 5 failures for 15 mins |
 
@@ -176,15 +184,15 @@ Features mapped to SRS requirement IDs:
 
 ## 7. Test Schedule
 
-| Milestone | Date |
-|-----------|------|
-| Test case design | [Date] |
-| Test environment setup | [Date] |
-| Test execution start | [Date] |
-| Functional testing completion | [Date] |
-| Security and performance testing | [Date] |
-| Test execution end | [Date] |
-| Final test summary | [Date] |
+| Milestone | Target |
+|-----------|--------|
+| Test-case design complete | 08-11-2026 |
+| Test environment ready | Before first execution |
+| Unit and API suite implementation | Parallel with product code |
+| Coverage gates (≥ 80 %) enforced | Before acceptance |
+| Performance and responsive runners | After servers can be started locally |
+| Final consolidated reports | End of test cycle |
+
 
 ---
 
@@ -192,11 +200,14 @@ Features mapped to SRS requirement IDs:
 
 The following deliverables shall be produced during the testing process:
 
-- Software Test Plan (STP)
+- Software Test Plan (STP) (This document)
 - Test Cases
-- Test Data
-- Test Execution Results
-- Defect Reports
+- Test Execution Results - The five consolidated reports under `tests/reports/`:
+  1. `unit-test-report.md`
+  2. `performance-report.md`
+  3. `branch-coverage-report.md`
+  4. `code-coverage-report.md`
+  5. `system-acceptance-report.md`
 - Requirements Traceability Matrix (RTM)
 - Test Summary Report
 
@@ -271,57 +282,212 @@ The following deliverables shall be produced during the testing process:
 
 ## 13. Test Case Management & Traceability
 
-A Requirements Traceability Matrix (RTM) shall be maintained to ensure that the functional, non-functional, and security requirements specified in the SRS are covered by appropriate test cases.
-
-Each test case shall contain a unique test case ID and shall reference the corresponding SRS requirement.
-
-**Example:**
-
-| Requirement | Test Case(s) |
-|-------------|--------------|
-| EMS-FR-01 (Landing page) | TC-UI-01 |
-| EMS-FR-02 (User registration) | TC-AUTH-01 |
-| EMS-FR-03 (Login and JWT) | TC-AUTH-02 |
-| EMS-FR-09 (Event search and filtering) | TC-EVT-01 |
-| EMS-FR-10 (Event registration) | TC-REG-01 |
-| EMS-FR-11 (Simulated payment) | TC-PAY-01, TC-PAY-02 |
-| EMS-FR-12 (Rating and review) | TC-REV-01 |
-| EMS-NFR-01 (Response time) | TC-PERF-01 |
-| EMS-SEC-01 (Password hashing) | TC-SEC-01 |
-| EMS-SEC-02 (JWT validation and expiry) | TC-SEC-02 |
-| EMS-SEC-03 (Role-based authorization) | TC-SEC-03 |
-
-The RTM shall be updated when requirements or test cases change.
+| Requirement | Planned Test Case(s) | Primary suite file(s) |
+|-------------|----------------------|------------------------|
+| EMS-FR-01 | TC-UI-01 … TC-UI-05 | `Landing.test.jsx`, `Navbar.test.jsx`, `App.test.jsx` |
+| EMS-FR-02 | TC-AUTH-01 … TC-AUTH-08 | `auth.test.js` (backend), `Signup.test.jsx` |
+| EMS-FR-03 | TC-AUTH-09 … TC-AUTH-18 | `login.test.js`, `auth.test.js`, `Login.test.jsx`, `loginFlow.test.jsx`, `auth.test.js` (frontend) |
+| EMS-FR-04 | TC-AUTH-19 … TC-AUTH-26 | `auth.test.js`, `ProtectedRoute.test.jsx` |
+| EMS-FR-05 | TC-EVT-01 … TC-EVT-07 | `hostEvents*.test.js`, `eventController.unit.test.js`, `HostDashboard.test.jsx`, `EventSection.test.jsx` |
+| EMS-FR-06 | TC-EVT-08 … TC-EVT-13 | `eventDetails*.test.js`, `EventDetails.test.jsx`, `eventFormat.test.js` |
+| EMS-FR-07 | TC-EVT-14 … TC-EVT-21 | `eventManagement*.test.js`, `eventController.unit.test.js`, `CreateEvent.test.jsx`, `EditEvent.test.jsx`, `EventForm.test.jsx`, `eventForm.test.js` |
+| EMS-FR-08 | TC-ATT-01, TC-ATT-02 | `AttendeeDashboard.test.jsx`, `AttendeeEventDetails.test.jsx` |
+| EMS-FR-09 | — | Yet to be done |
+| EMS-FR-10 | — | Yet to be done |
+| EMS-FR-11 | — | Yet to be done |
+| EMS-FR-12 | TC-REV-01 … TC-REV-05 | `reviewController.unit.test.js`, `reviews.api.test.js` |
+| EMS-FR-13 | — | Yet to be done |
+| EMS-FR-14 | TC-ERR-01 … TC-ERR-05 | `errorResponses.api.test.js`, `ErrorMessage.test.jsx`, form error paths |
+| EMS-NFR-01 | TC-PERF-01, TC-PERF-02 | `tests/performance/run-performance.mjs` |
+| EMS-NFR-02 | Manual | — |
+| EMS-NFR-03 | TC-RESP-01 … TC-RESP-03 | `responsive.test.js`, `verify-responsive.mjs` |
+| EMS-NFR-04 | Partial (error paths) | Reliability describes inside host/event suites |
+| EMS-NFR-05 | TC-CFG-01 … TC-CFG-03 | `envConfig.test.js`, `config.unit.test.js`, `mongo.unit.test.js` |
+| EMS-NFR-06 | Partial (pagination) | `eventController.unit.test.js` (pagination cases) |
+| EMS-SEC-01 | TC-SEC-01 | `auth.test.js` |
+| EMS-SEC-02 | TC-SEC-02 | `login.test.js`, `auth.test.js` |
+| EMS-SEC-03 | TC-SEC-03 | `auth.test.js`, `ProtectedRoute.test.jsx` |
+| EMS-SEC-04 | — | Out of scope |
+| EMS-SEC-05 | Validation cases under FR-02/07/12 | Multiple suites |
+| EMS-SEC-06 | — | Deferred |
 
 ---
 
-## 14. Test Metrics & Reporting
+## 14. Planned Test Cases
+
+Test cases are grouped by requirement. Each group will be realised by one or more files under `tests/`. The identifiers below are the planning IDs; the concrete `describe` / `test` blocks in the source will carry the same EMS-FR / EMS-NFR / EMS-SEC tags for easy tracing.
+
+### 14.1 EMS-FR-01 – Landing page and navigation
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-UI-01 | Landing page renders primary marketing content and calls-to-action | Frontend unit |
+| TC-UI-02 | Navigation bar shows logo, Log in, Sign up and section links | Frontend unit |
+| TC-UI-03 | Mobile menu opens and closes; selecting a link closes the menu | Frontend unit |
+| TC-UI-04 | Public routes (`/`, `/login`, `/signup`) are reachable without authentication | Frontend unit |
+| TC-UI-05 | Scrolling changes navigation bar appearance | Frontend unit |
+
+### 14.2 EMS-FR-02 – Signup
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-AUTH-01 | Successful signup of an Attendee and of a Host returns 201 | Backend API |
+| TC-AUTH-02 | Password is stored only as a salted bcrypt hash (EMS-SEC-01) | Backend API |
+| TC-AUTH-03 | Identical passwords produce different hashes (salting) | Backend API |
+| TC-AUTH-04 | Duplicate email (case- and space-insensitive) is rejected with 409 | Backend API |
+| TC-AUTH-05 | Injection-style text is stored literally and does not break the schema | Backend API |
+| TC-AUTH-06 | Frontend form rejects empty, invalid email, short password and mismatched confirmation | Frontend unit |
+| TC-AUTH-07 | Successful frontend submission shows success feedback | Frontend unit |
+| TC-AUTH-08 | Network failure on signup shows a clear recoverable message | Frontend unit |
+
+### 14.3 EMS-FR-03 – Login and JWT
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-AUTH-09 | Correct credentials return a token and user object | Backend API |
+| TC-AUTH-10 | JWT contains user id and role, is HS256-signed and expires in 60 minutes | Backend API |
+| TC-AUTH-11 | Email matching is case- and space-insensitive; password is case-sensitive | Backend API |
+| TC-AUTH-12 | Wrong password or unknown email returns the same 401 message and no token | Backend API |
+| TC-AUTH-13 | Correct credentials with the wrong role return 403 and no token | Backend API |
+| TC-AUTH-14 | Malformed JSON body returns 400; server remains operational | Backend API |
+| TC-AUTH-15 | Frontend login form validation (required fields, format) | Frontend unit |
+| TC-AUTH-16 | Successful login stores session and navigates to the role dashboard | Frontend integration |
+| TC-AUTH-17 | Invalid credentials, role mismatch and network errors surface clear messages | Frontend unit |
+| TC-AUTH-18 | Login button is disabled while the request is in flight | Frontend unit |
+
+### 14.4 EMS-FR-04 – Role-specific interface and route protection
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-AUTH-19 | Each role can reach its own dashboard (200) | Backend API |
+| TC-AUTH-20 | A role cannot reach the other role’s dashboard (403) | Backend API |
+| TC-AUTH-21 | Missing, malformed, tampered, expired or wrongly-signed tokens yield 401 | Backend API |
+| TC-AUTH-22 | ProtectedRoute redirects unauthenticated users to login | Frontend unit |
+| TC-AUTH-23 | ProtectedRoute redirects wrong-role users to login | Frontend unit |
+| TC-AUTH-24 | Valid token allows the protected page to render | Frontend unit |
+| TC-AUTH-25 | Server rejection of the token clears the session and redirects | Frontend unit |
+| TC-AUTH-26 | Backend unreachable shows a clear message without silent failure | Frontend unit |
+
+### 14.5 EMS-FR-05 – Host past / upcoming events
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-EVT-01 | Host can list upcoming events with default pagination and restricted projection | Backend unit + API |
+| TC-EVT-02 | Host can list past events with requested pagination and descending date sort | Backend unit + API |
+| TC-EVT-03 | Invalid or unsupported status / pagination query is rejected | Backend unit |
+| TC-EVT-04 | Access control: only the owning host sees the list | Backend API |
+| TC-EVT-05 | Host dashboard UI renders the event sections | Frontend unit |
+| TC-EVT-06 | EventSection component handles loading, empty and error states | Frontend unit |
+| TC-EVT-07 | Database-unavailable path returns a structured error | Backend API |
+
+### 14.6 EMS-FR-06 – Host event details
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-EVT-08 | Owner receives full event detail including registered-attendee count | Backend API |
+| TC-EVT-09 | Non-owner or wrong role is denied | Backend API |
+| TC-EVT-10 | Malformed event id is rejected | Backend API |
+| TC-EVT-11 | Frontend Event Details page renders title, date, capacity, price and counts | Frontend unit |
+| TC-EVT-12 | Formatting helpers produce human-readable date, price and capacity strings | Frontend unit |
+| TC-EVT-13 | Unavailable database yields a recoverable error | Backend + Frontend |
+
+### 14.7 EMS-FR-07 – Create and edit events
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-EVT-14 | Host can create a valid event | Backend API + unit |
+| TC-EVT-15 | Validation rejects missing/invalid title, date, capacity, price, etc. | Backend unit + API |
+| TC-EVT-16 | Host can update an owned event; capacity cannot fall below current registrations | Backend API |
+| TC-EVT-17 | Non-owner cannot edit another host’s event | Backend API |
+| TC-EVT-18 | Frontend Create Event page submits validated data and shows success | Frontend unit |
+| TC-EVT-19 | Frontend Edit Event page loads existing values and submits changes | Frontend unit |
+| TC-EVT-20 | EventForm component validates fields and surfaces server validation errors | Frontend unit |
+| TC-EVT-21 | Database-unavailable and network-error paths are handled | Backend + Frontend |
+
+### 14.8 EMS-FR-08 – Attendee dashboard (partial)
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-ATT-01 | Attendee dashboard shell renders without crashing | Frontend unit |
+| TC-ATT-02 | Attendee event-details view renders core fields | Frontend unit |
+
+*(Full history/upcoming lists and registration flows are deferred with FR-09/10/11.)*
+
+### 14.9 EMS-FR-12 – Ratings and reviews
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-REV-01 | Authenticated attendee can create a review for an eligible event | Backend unit + API |
+| TC-REV-02 | Review summary (average rating, count, comments) is returned correctly | Backend unit + API |
+| TC-REV-03 | Unauthenticated or wrong-role requests are rejected | Backend API |
+| TC-REV-04 | Input validation rejects out-of-range ratings and empty comments where required | Backend unit |
+| TC-REV-05 | Duplicate or otherwise invalid review attempts return structured errors | Backend API |
+
+### 14.10 EMS-FR-14 – Error messages and retry
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-ERR-01 | Unknown API route returns structured JSON 404 | Backend API |
+| TC-ERR-02 | Missing / invalid token returns readable JSON 401 | Backend API |
+| TC-ERR-03 | Wrong role returns readable JSON 403 without clearing a valid session | Backend API |
+| TC-ERR-04 | Frontend ErrorMessage component displays the supplied text | Frontend unit |
+| TC-ERR-05 | Login, signup and event forms show server or network errors and remain usable for retry | Frontend unit |
+
+### 14.11 EMS-NFR-01 – Performance
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-PERF-01 | Landing page load time ≤ 5 000 ms for each of N measured runs | Performance runner |
+| TC-PERF-02 | API login endpoint p95 latency ≤ 500 ms over the configured sample | Performance runner |
+
+### 14.12 EMS-NFR-03 – Responsive layout
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-RESP-01 | Stylesheet contains the required mobile, tablet, desktop and wide media queries | Frontend unit |
+| TC-RESP-02 | Root and major containers allow shrinking (min-width: 0) | Frontend unit |
+| TC-RESP-03 | Live pages at widths 360, 768, 1024 and 1920 px show no horizontal overflow on `/`, `/login`, `/signup` | Responsive runner |
+
+### 14.13 EMS-NFR-05 – Configuration
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-CFG-01 | PORT, MONGODB_URI, SQLITE_PATH and JWT_SECRET are read from environment / `.env` | Backend unit |
+| TC-CFG-02 | Sensible defaults are used when environment values are absent | Backend unit |
+| TC-CFG-03 | MongoDB connection helper builds a correct URI for the test database | Backend unit |
+
+### 14.14 Security (cross-cutting)
+
+| TC ID | Description | Level |
+|-------|-------------|-------|
+| TC-SEC-01 | (covered by TC-AUTH-02 / TC-AUTH-03) Passwords are salted bcrypt hashes | Backend |
+| TC-SEC-02 | (covered by TC-AUTH-10 / TC-AUTH-21) JWT lifetime and rejection of bad tokens | Backend |
+| TC-SEC-03 | (covered by TC-AUTH-13 / TC-AUTH-19 / TC-AUTH-20) Role-based access control | Backend + Frontend |
+
+---
+
+## 15. Test Metrics & Reporting
 
 **Metrics collected:**
 
-- Percentage of planned test cases executed.
-- Percentage of test cases passed and failed.
-- Number of defects identified.
-- Number of open and closed defects.
-- Defect severity distribution.
-- Functional requirement coverage.
-- Non-functional requirement coverage.
-- Security requirement coverage.
-- Requirements traceability coverage.
-- Performance results for operations with specified response-time requirements.
+- Number and percentage of planned test cases executed / passed / failed.
+- Statement, branch, function and line coverage for backend and for frontend.
+- Performance measurements (max page load, API p95).
+- Responsive pass/fail matrix.
 
 **Reports:**
 
-- Test execution status reports.
-- Defect reports.
-- Requirements Traceability Matrix.
-- Final Test Summary Report.
+1. `unit-test-report.md` – combined backend unit + frontend component results  
+2. `performance-report.md` – page-load and API latency results  
+3. `branch-coverage-report.md` – combined branch coverage  
+4. `code-coverage-report.md` – combined statement / function / line coverage  
+5. `system-acceptance-report.md` – full functional + responsive acceptance run  
 
-The Final Test Summary Report shall provide an overview of the testing performed, test results, outstanding defects, requirement coverage, and overall test completion status.
+Temporary HTML/LCOV artefacts have been written under `tests/reports/coverage-*-temp/` for inspection; they are not part of the five required deliverables.
 
 ---
 
-## 15. Approvals
+## 16. Approvals
 
 | Role | Name | Signature/Date |
 |------|------|----------------|

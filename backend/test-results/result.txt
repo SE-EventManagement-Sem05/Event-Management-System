@@ -1,0 +1,36 @@
+ PASS  tests/reviews.api.test.js (232.97 s)
+ PASS  tests/eventManagement.test.js (74.781 s)
+ PASS  tests/eventDetails.test.js (37.503 s)
+ PASS  tests/hostEvents.test.js (20.845 s)
+ PASS  tests/login.test.js (18.752 s)
+ PASS  tests/hostEvents.api.test.js
+ PASS  tests/auth.test.js
+ PASS  tests/eventManagement.api.test.js
+ PASS  tests/eventDetails.api.test.js
+ PASS  tests/errorResponses.api.test.js
+ PASS  tests/envConfig.test.js
+----------------------|---------|----------|---------|---------|---------------------------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------------------|---------|----------|---------|---------|---------------------------------------
+All files             |   63.74 |    61.64 |   67.64 |   63.49 |
+ backend              |   81.25 |    82.81 |      75 |   81.98 |
+  config.js           |     100 |       50 |     100 |     100 | 7-11
+  db.js               |     100 |      100 |     100 |     100 |
+  mongo.js            |   26.66 |        0 |       0 |   28.57 | 7-24
+  server.js           |    88.5 |     90.9 |      90 |    88.5 | 77-78,146-147,273,294-296,306-309
+ backend/controllers  |   36.94 |    25.77 |   52.94 |   35.29 |
+  eventController.js  |   55.68 |    56.81 |   81.81 |   53.57 | 46-90,127-139,148-162,187-198,211-236
+  reviewController.js |   13.04 |        0 |       0 |   13.04 | 12-233
+ backend/models       |     100 |      100 |     100 |     100 |
+  Event.js            |     100 |      100 |     100 |     100 |
+  Registration.js     |     100 |      100 |     100 |     100 |
+  Review.js           |     100 |      100 |     100 |     100 |
+ backend/validators   |     100 |    98.27 |     100 |     100 |
+  eventValidator.js   |     100 |    98.27 |     100 |     100 | 49
+----------------------|---------|----------|---------|---------|---------------------------------------
+
+Test Suites: 11 passed, 11 total
+Tests:       216 passed, 216 total
+Snapshots:   0 total
+Time:        405.398 s
+Ran all test suites.
