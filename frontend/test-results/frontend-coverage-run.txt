@@ -1,0 +1,127 @@
+6:01:25 AM [vite] warning: `esbuild` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `oxc` instead.
+6:01:25 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ jsx: 'automatic', jsxImportSource: undefined }`
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/mnt/c/Users/Bhavana/Music/Event-Management-System/frontend[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/utils/eventFormat.test.js [2m([22m[2m12 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/utils/eventForm.test.js [2m([22m[2m30 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/utils/auth.test.js [2m([22m[2m8 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/utils/events.test.js [2m([22m[2m15 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/styles/responsive.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstderr[2m | src/components/ProtectedRoute.test.jsx[2m > [22m[2mEMS-FR-04 ProtectedRoute[2m > [22m[2mredirects to login when there is no session
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/components/ProtectedRoute.test.jsx [2m([22m[2m7 tests[22m[2m)[22m[32m 241[2mms[22m[39m
+[90mstderr[2m | src/pages/Landing.test.jsx[2m > [22m[2mEMS-FR-01 Landing page content[2m > [22m[2mthe main headline states the purpose of the platform
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/components/ErrorMessage.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 248[2mms[22m[39m
+ [32m✓[39m src/pages/Landing.test.jsx [2m([22m[2m13 tests[22m[2m)[22m[33m 520[2mms[22m[39m
+[90mstderr[2m | src/components/Navbar.test.jsx[2m > [22m[2mEMS-FR-01 Navigation bar[2m > [22m[2mshows the logo linking to the landing page
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/components/EventSection.test.jsx[2m > [22m[2mEMS-FR-05 EventSection[2m > [22m[2meach title links to the details page when getDetailsPath is given (EMS-FR-06)
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/components/EventSection.test.jsx [2m([22m[2m12 tests[22m[2m)[22m[33m 519[2mms[22m[39m
+ [32m✓[39m src/components/Navbar.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 337[2mms[22m[39m
+[90mstderr[2m | src/pages/EditEvent.test.jsx[2m > [22m[2mEMS-FR-07 Edit event page[2m > [22m[2mloads the event and pre-fills the form
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/pages/CreateEvent.test.jsx[2m > [22m[2mEMS-FR-07 Create event page[2m > [22m[2msaving returns to the dashboard with a success notice
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/pages/EventDetails.test.jsx[2m > [22m[2mEMS-FR-06 Event details page[2m > [22m[2mrequests the event named in the URL
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/pages/Login.test.jsx[2m > [22m[2mEMS-FR-03 Login form[2m > [22m[2mhas a role selector, email, password and a submit button
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/components/EventForm.test.jsx[2m > [22m[2mEMS-FR-07 EventForm[2m > [22m[2mshows title, description, date/time, venue, price and capacity fields
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/pages/HostDashboard.test.jsx[2m > [22m[2mEMS-FR-05 Host dashboard[2m > [22m[2mwelcomes the host and requests upcoming and past events separately
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/pages/AttendeeEventDetails.test.jsx[2m > [22m[2mEMS-FR-12 attendee reviews[2m > [22m[2mshows the average rating and existing reviews
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/loginFlow.test.jsx[2m > [22m[2mEMS-FR-03 login journey through the app[2m > [22m[2ma host who logs in reaches the guarded host dashboard
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/App.test.jsx[2m > [22m[2mEMS-FR-01 Landing page in the app[2m > [22m[2mthe landing page is shown at / with the navigation bar and footer
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/pages/EditEvent.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 553[2mms[22m[39m
+     [33m[2m✓[22m[39m saving sends the changes and opens the details page with a notice [33m 351[2mms[22m[39m
+ [32m✓[39m src/pages/EventDetails.test.jsx [2m([22m[2m14 tests[22m[2m)[22m[33m 587[2mms[22m[39m
+ [32m✓[39m src/pages/HostDashboard.test.jsx [2m([22m[2m7 tests[22m[2m)[22m[33m 624[2mms[22m[39m
+     [33m[2m✓[22m[39m shows Upcoming first and the Past list after switching tabs [33m 310[2mms[22m[39m
+ [32m✓[39m src/pages/AttendeeEventDetails.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[33m 654[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the average rating and existing reviews [33m 343[2mms[22m[39m
+ [32m✓[39m src/App.test.jsx [2m([22m[2m11 tests[22m[2m)[22m[33m 931[2mms[22m[39m
+ [32m✓[39m src/loginFlow.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[33m 1004[2mms[22m[39m
+     [33m[2m✓[22m[39m a host who logs in reaches the guarded host dashboard [33m 646[2mms[22m[39m
+ [32m✓[39m src/pages/CreateEvent.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[33m 1335[2mms[22m[39m
+     [33m[2m✓[22m[39m saving returns to the dashboard with a success notice [33m 726[2mms[22m[39m
+     [33m[2m✓[22m[39m a server error keeps the user on the form [33m 343[2mms[22m[39m
+ [32m✓[39m src/components/EventForm.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1837[2mms[22m[39m
+     [33m[2m✓[22m[39m a past date is rejected [33m 372[2mms[22m[39m
+ [32m✓[39m src/pages/Login.test.jsx [2m([22m[2m16 tests[22m[2m)[22m[33m 2021[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m19 passed[39m[22m[90m (19)[39m
+[2m      Tests [22m [1m[32m184 passed[39m[22m[90m (184)[39m
+[2m   Start at [22m 06:01:36
+[2m   Duration [22m 37.83s[2m (transform 18.05s, setup 66.25s, import 34.93s, tests 11.47s, environment 497.00s)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   83.52 |    78.42 |   88.46 |   84.74 |                   
+ src               |      50 |      100 |     100 |      50 |                   
+  App.jsx          |     100 |      100 |     100 |     100 |                   
+  main.jsx         |       0 |      100 |     100 |       0 | 9                 
+ src/components    |   91.27 |    85.92 |   97.77 |    94.7 |                   
+  ErrorMessage.jsx |     100 |       80 |     100 |     100 | 13-14             
+  EventForm.jsx    |   97.36 |    86.36 |     100 |     100 | 53,71,79          
+  EventSection.jsx |   92.85 |    88.88 |     100 |     100 | 10,42,54,57-61    
+  Footer.jsx       |     100 |      100 |     100 |     100 |                   
+  Layout.jsx       |     100 |      100 |     100 |     100 |                   
+  Logo.jsx         |     100 |      100 |     100 |     100 |                   
+  Navbar.jsx       |     100 |      100 |     100 |     100 |                   
+  Orbs.jsx         |   93.33 |       50 |     100 |     100 | 7                 
+  ...ctedRoute.jsx |      90 |    89.65 |     100 |    92.3 | 16,53-54          
+  Reveal.jsx       |    62.5 |    55.55 |      75 |   64.28 | 10-11,15-17       
+  ...ewSection.jsx |     100 |    92.85 |     100 |     100 | 32                
+ src/pages         |   72.61 |     62.5 |   79.66 |   73.45 |                   
+  ...Dashboard.jsx |      40 |       50 |      50 |      40 | 6-8               
+  ...ntDetails.jsx |      74 |       50 |   72.72 |   76.08 | ...0,75-80,91-102 
+  CreateEvent.jsx  |     100 |      100 |     100 |     100 |                   
+  EditEvent.jsx    |   92.85 |       75 |   85.71 |   96.15 | 77                
+  EventDetails.jsx |   97.05 |    85.18 |     100 |     100 | 35-38,63,114      
+  ...Dashboard.jsx |   78.94 |    83.33 |   77.77 |   78.94 | 38-44             
+  Landing.jsx      |     100 |      100 |     100 |     100 |                   
+  Login.jsx        |    97.5 |     90.9 |     100 |   97.29 | 29                
+  Signup.jsx       |    8.69 |    19.44 |   16.66 |    9.09 | 17-113            
+ src/utils         |   97.02 |    96.47 |      92 |   96.77 |                   
+  auth.js          |     100 |      100 |     100 |     100 |                   
+  eventForm.js     |     100 |      100 |     100 |     100 |                   
+  eventFormat.js   |     100 |      100 |     100 |     100 |                   
+  events.js        |   89.65 |    88.88 |      80 |   89.28 | 99-107            
+-------------------|---------|----------|---------|---------|-------------------

@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const config = require('./config');
 
 const MAX_DELAY_MS = 30000;
 
 async function connectMongo(attempt = 1) {
-  const uri = process.env.MONGODB_URI;
+  const uri = config.MONGODB_URI;
 
   if (!uri) {
     console.error('MONGODB_URI is not set. Add it to backend/.env and restart.');
