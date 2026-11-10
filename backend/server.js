@@ -1,4 +1,4 @@
-require('dotenv').config();
+const config = require('./config');
 
 const express = require('express');
 const cors = require('cors');
@@ -21,9 +21,9 @@ const {
 const { registerForEvent } = require('./controllers/registrationController');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '60m';
+const PORT = config.PORT;
+const JWT_SECRET = config.JWT_SECRET;
+const JWT_EXPIRES_IN = config.JWT_EXPIRES_IN;
 
 if (!JWT_SECRET) {
   console.error('JWT_SECRET is not set. Add it to backend/.env and restart.');

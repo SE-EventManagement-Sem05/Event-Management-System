@@ -41,7 +41,7 @@ The Event Management System is a web-based application that interacts with users
 
 The major system interfaces are:
 
-- **Frontend–Backend Interface:** The React frontend communicates with the Node.js/Express backend through REST APIs over HTTP/HTTPS.
+- **Frontend–Backend Interface:** The React frontend communicates with the Node.js/Express backend through REST APIs over HTTP.
 
 - **Backend–Database Interfaces:** The backend communicates with MongoDB for application data and SQLite for authentication records using appropriate database drivers.
 
@@ -95,7 +95,7 @@ MongoDB shall store application data including events, user profiles, reviews, a
 
 #### 2.1.5 Communications Interfaces
 
-- The system shall use RESTful APIs over HTTP/HTTPS for communication between the React frontend and Node.js/Express backend.
+- The system shall use RESTful APIs over HTTP for communication between the React frontend and Node.js/Express backend.
 
 - The backend shall communicate with MongoDB and SQLite using their appropriate database drivers.
 
@@ -485,7 +485,7 @@ Requirements identified for future releases may be incorporated based on user ne
 
 - JWT secrets shall be stored only in server-side `.env` files and shall never be exposed to the frontend or included in client-side bundles.
 
-- Session tokens shall expire after a defined interval (e.g., 24 hours), after which the user shall be required to re-authenticate.
+- Session tokens shall expire after a defined interval (60 min), after which the user shall be required to re-authenticate.
 
 ---
 

@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-11-08T06:12:09.862Z",
+  "pageLoad": {
+    "url": "http://localhost:5173",
+    "runs": [
+      {
+        "run": 1,
+        "elapsedMs": 189.88,
+        "httpStatus": 200,
+        "domContentLoadedMs": 184.6,
+        "loadEventMs": 187.1,
+        "passed": true
+      },
+      {
+        "run": 2,
+        "elapsedMs": 203.76,
+        "httpStatus": 200,
+        "domContentLoadedMs": 201,
+        "loadEventMs": 202,
+        "passed": true
+      },
+      {
+        "run": 3,
+        "elapsedMs": 161.39,
+        "httpStatus": 200,
+        "domContentLoadedMs": 158.7,
+        "loadEventMs": 159.8,
+        "passed": true
+      },
+      {
+        "run": 4,
+        "elapsedMs": 219.44,
+        "httpStatus": 200,
+        "domContentLoadedMs": 217.1,
+        "loadEventMs": 217.8,
+        "passed": true
+      },
+      {
+        "run": 5,
+        "elapsedMs": 219.84,
+        "httpStatus": 200,
+        "domContentLoadedMs": 217.2,
+        "loadEventMs": 218.2,
+        "passed": true
+      }
+    ],
+    "maxLoadMs": 219.84,
+    "averageLoadMs": 198.86,
+    "passed": true
+  },
+  "api": {
+    "url": "http://localhost:5000/api/auth/login",
+    "method": "POST",
+    "warmupRequestsExcluded": 5,
+    "measuredRequests": 100,
+    "minMs": 47.75,
+    "averageMs": 49.26,
+    "medianMs": 49.16,
+    "p95Ms": 50.74,
+    "maxMs": 52.5,
+    "statusCounts": {
+      "401": 100
+    },
+    "serverErrors": 0,
+    "passed": true
+  },
+  "overallPassed": true
+}

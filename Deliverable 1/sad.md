@@ -119,9 +119,9 @@ The system has the following constraints:
 - JWT-based authentication
 - SQLite for authentication data
 - MongoDB for application data
-- REST APIs over HTTPS
+- REST APIs over HTTP
 - Simulated payment instead of actual payment gateway integration
-- Approximately 100 concurrent users
+- Approximately 25 concurrent users
 
 ---
 
@@ -253,7 +253,7 @@ A **layered architecture** was chosen to provide a clear separation of concerns 
 | ODM | Mongoose |
 | Authentication | JWT / jsonwebtoken |
 | Password Hashing | bcrypt |
-| Communication | REST API over HTTPS |
+| Communication | REST API over HTTP |
 
 ---
 
@@ -315,8 +315,8 @@ The security architecture aims to:
 
 | Threat | Security Measure |
 |---|---|
-| **Spoofing** | bcrypt password hashing, account lockout after 5 failed attempts, JWT with fixed algorithm and expiry |
-| **Tampering** | JWT signature verification, schema validation, HTTPS |
+| **Spoofing** | bcrypt password hashing, JWT with fixed algorithm and expiry |
+| **Tampering** | JWT signature verification, schema validation, HTTP |
 | **Repudiation** | Logging of important transactions and backend operations |
 | **Information Disclosure** | TLS and controlled authentication error messages |
 | **Denial of Service** | API rate limiting and pagination limits |

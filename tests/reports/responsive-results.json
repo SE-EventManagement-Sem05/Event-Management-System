@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-11-08T06:12:09.373Z",
+  "baseUrl": "http://localhost:5173",
+  "routes": [
+    "/",
+    "/login",
+    "/signup"
+  ],
+  "viewportWidths": [
+    360,
+    768,
+    1024,
+    1920
+  ],
+  "results": [
+    {
+      "route": "/",
+      "width": 360,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 360,
+      "documentWidth": 360,
+      "bodyWidth": 360,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 768,
+      "documentWidth": 768,
+      "bodyWidth": 768,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 1024,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 1024,
+      "documentWidth": 1024,
+      "bodyWidth": 1024,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 1920,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 1920,
+      "documentWidth": 1920,
+      "bodyWidth": 1920,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/login",
+      "width": 360,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 360,
+      "documentWidth": 360,
+      "bodyWidth": 360,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/login",
+      "width": 768,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 768,
+      "documentWidth": 768,
+      "bodyWidth": 768,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/login",
+      "width": 1024,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 1024,
+      "documentWidth": 1024,
+      "bodyWidth": 1024,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/login",
+      "width": 1920,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 1920,
+      "documentWidth": 1920,
+      "bodyWidth": 1920,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/signup",
+      "width": 360,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 360,
+      "documentWidth": 360,
+      "bodyWidth": 360,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/signup",
+      "width": 768,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 768,
+      "documentWidth": 768,
+      "bodyWidth": 768,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/signup",
+      "width": 1024,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 1024,
+      "documentWidth": 1024,
+      "bodyWidth": 1024,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "route": "/signup",
+      "width": 1920,
+      "height": 900,
+      "httpStatus": 200,
+      "viewportWidth": 1920,
+      "documentWidth": 1920,
+      "bodyWidth": 1920,
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "passed": true
+    }
+  ],
+  "overallPassed": true
+}
