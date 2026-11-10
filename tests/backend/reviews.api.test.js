@@ -241,4 +241,22 @@ describe('EMS-FR-12 review creation and summaries', () => {
     expect(response.body.event.averageRating).toBeNull();
     expect(response.body.event.reviewCount).toBe(0);
   });
+
+    test('event details show when an attendee is registered', async () => {
+    const response = await get(
+      `${URL}/${ids.upcoming}`,
+      attendeeA.token
+    ).expect(200);
+
+    expect(response.body.event.isRegistered).toBe(true);
+  });
+
+  test('event details show when an attendee is not registered', async () => {
+    const response = await get(
+      `${URL}/${ids.upcoming}`,
+      unregisteredAttendee.token
+    ).expect(200);
+
+    expect(response.body.event.isRegistered).toBe(false);
+  });
 });

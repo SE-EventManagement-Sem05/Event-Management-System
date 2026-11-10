@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
-  ApiError,
   SessionExpiredError,
   fetchAttendeeEvent,
   submitEventReview,
+  registerForEvent,
 } from '../utils/events.js';
 import {
   formatCapacity,
@@ -23,10 +23,12 @@ export default function AttendeeEventDetails() {
   const [event, setEvent] = useState(null);
   const [error, setError] = useState(null);
   const [reviewError, setReviewError] = useState('');
+  const [registrationError, setRegistrationError] = useState('');
   const [notice, setNotice] = useState('');
   const [rating, setRating] = useState('5');
   const [comment, setComment] = useState('');
   const [saving, setSaving] = useState(false);
+  const [registering, setRegistering] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
@@ -54,6 +56,31 @@ export default function AttendeeEventDetails() {
       cancelled = true;
     };
   }, [id, reloadKey, navigate]);
+
+  async function handleRegister() {
+    setRegistering(true);
+    setRegistrationError('');
+    setNotice('');
+
+    try {
+      const response = await registerForEvent(id);
+      setNotice(
+        response.message || 'Registered for the event successfully.'
+      );
+      setReloadKey((key) => key + 1);
+    } catch (err) {
+      if (err instanceof SessionExpiredError) {
+        navigate('/login', { replace: true });
+        return;
+      }
+
+      setRegistrationError(
+        err.message || 'Unable to register for this event. Please try again.'
+      );
+    } finally {
+      setRegistering(false);
+    }
+  }
 
   async function handleReviewSubmit(submitEvent) {
     submitEvent.preventDefault();
@@ -86,6 +113,7 @@ export default function AttendeeEventDetails() {
   }
 
   const canRetry = error && (!error.status || error.status >= 500);
+  const isUpcoming = event && new Date(event.date) >= new Date();
 
   if (error) {
     return (
@@ -161,6 +189,33 @@ export default function AttendeeEventDetails() {
 
         <h2 className="event-description-title">Description</h2>
         <p className="event-description">{event.description}</p>
+
+        {isUpcoming && (
+          <section className="registration-section">
+            {event.isRegistered ? (
+              <p className="dash-notice" role="status">
+                You are registered for this event.
+              </p>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="event-button event-button-primary"
+                  onClick={handleRegister}
+                  disabled={registering}
+                >
+                  {registering ? 'Registering…' : 'Register for event'}
+                </button>
+
+                {registrationError && (
+                  <p className="event-error" role="alert">
+                    {registrationError}
+                  </p>
+                )}
+              </>
+            )}
+          </section>
+        )}
 
         <ReviewSection
           averageRating={event.averageRating}
