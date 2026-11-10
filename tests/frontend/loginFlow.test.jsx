@@ -72,7 +72,7 @@ describe('EMS-FR-03 login journey through the app', () => {
     await user.type(screen.getByLabelText('Password'), 'Password123');
     await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Attendee Dashboard' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Find Events' })).toBeInTheDocument();
   });
 
   test('wrong credentials keep the user on the login page with no session', async () => {

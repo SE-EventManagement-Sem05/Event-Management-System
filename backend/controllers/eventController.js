@@ -95,6 +95,7 @@ function toEventDetails(event, registeredCount) {
     venue: event.venue,
     price: event.price,
     capacity: event.capacity,
+    category: event.category || '',
     registeredCount,
   };
 }
@@ -240,8 +241,16 @@ async function updateEvent(req, res) {
 }
 
 
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+
 async function listAttendeeEvents(req, res) {
   const { status } = req.query;
+  const { location, interest, category } = req.query;
+
   const page = parsePositiveInt(req.query.page, 1, MAX_PAGE);
   const limit = parsePositiveInt(req.query.limit, DEFAULT_LIMIT, MAX_LIMIT);
 
@@ -257,6 +266,21 @@ async function listAttendeeEvents(req, res) {
     });
   }
 
+  const filters = { location, interest, category };
+
+  for (const [name, value] of Object.entries(filters)) {
+    const maxLength = name === 'location' ? 200 : name === 'category' ? 50 : 120;
+
+    if (
+      value !== undefined &&
+      (typeof value !== 'string' || value.trim().length > maxLength)
+    ) {
+      return res.status(400).json({
+        message: `Invalid "${name}" filter.`,
+      });
+    }
+  }
+
   if (!databaseIsUp()) {
     return sendUnavailable(res);
   }
@@ -269,6 +293,33 @@ async function listAttendeeEvents(req, res) {
       date: isUpcoming ? { $gte: now } : { $lt: now },
     };
 
+    if (location && location.trim()) {
+      filter.venue = {
+        $regex: escapeRegex(location.trim()),
+        $options: 'i',
+      };
+    }
+
+    if (category && category.trim()) {
+      filter.category = {
+        $regex: `^${escapeRegex(category.trim())}$`,
+        $options: 'i',
+      };
+    }
+
+    if (interest && interest.trim()) {
+      const pattern = {
+        $regex: escapeRegex(interest.trim()),
+        $options: 'i',
+      };
+
+      filter.$or = [
+        { title: pattern },
+        { description: pattern },
+        { category: pattern },
+      ];
+    }
+
     const sort = isUpcoming
       ? { date: 1, _id: 1 }
       : { date: -1, _id: -1 };
@@ -279,7 +330,7 @@ async function listAttendeeEvents(req, res) {
         .sort(sort)
         .skip((page - 1) * limit)
         .limit(limit)
-        .select('title description date venue price capacity')
+        .select('title description date venue price capacity category')
         .lean(),
     ]);
 
@@ -299,6 +350,7 @@ async function listAttendeeEvents(req, res) {
     });
   }
 }
+
 
 
 module.exports = {
