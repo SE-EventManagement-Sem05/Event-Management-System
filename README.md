@@ -26,7 +26,7 @@ npm run dev                 # http://localhost:5173
 
 **Terminal 3: Backend**
 ```bash
-cd frontend
+cd backend
 npm install
 node server.js                 # http://localhost:5000
 ```
