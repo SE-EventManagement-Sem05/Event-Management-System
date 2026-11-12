@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Event = require('../models/Event');
 const Registration = require('../models/Registration');
 const Review = require('../models/Review');
+const Payment = require('../models/Payment');
 const db = require('../db');
 
 const ID_PATTERN = /^[a-f\d]{24}$/i;
@@ -88,14 +89,29 @@ async function getEventForReview(req, res) {
     let isRegistered = false;
     let canReview = false;
     let hasReviewed = false;
+    let paymentDetails = null;
 
     if (req.user.role === 'attendee') {
       const registration = await Registration.findOne({
-        eventId: event._id,
-        attendeeId: req.user.id,
-      }).select('_id').lean();
+  eventId: event._id,
+  attendeeId: req.user.id,
+}).select('_id').lean();
 
-      isRegistered = Boolean(registration);
+isRegistered = Boolean(registration);
+
+if (registration) {
+  const payment = await Payment.findOne({
+    eventId: event._id,
+    registrationId: registration._id,
+    attendeeId: req.user.id,
+    status: 'success',
+  })
+    .select('amount status transactionId createdAt')
+    .lean();
+
+  // Keep payment details available for the frontend.
+  paymentDetails = payment;
+}
 
       if (isPastEvent) {
         const existingReview = await Review.findOne({
@@ -109,14 +125,16 @@ async function getEventForReview(req, res) {
     }
 
     return res.status(200).json({
-      event: {
-        ...toPublicEvent(event),
-        ...reviewSummary,
-        ...(req.user.role === 'attendee' ? { isRegistered } : {}),
-        canReview,
-        hasReviewed,
-      },
-    });
+  event: {
+    ...toPublicEvent(event),
+    ...reviewSummary,
+    ...(req.user.role === 'attendee'
+      ? { isRegistered, payment: paymentDetails }
+      : {}),
+    canReview,
+    hasReviewed,
+  },
+});
   } catch (error) {
     console.error('Get event reviews error:', error.message);
 

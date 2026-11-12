@@ -28,6 +28,7 @@ async function run(command, payload) {
     case 'reset':
       await Event.deleteMany({});
       await mongoose.connection.collection('registrations').deleteMany({});
+      await mongoose.connection.collection('payments').deleteMany({});
       return { ok: true };
 
     case 'insertEvents': {
@@ -94,6 +95,22 @@ async function run(command, payload) {
         }),
       };
     }
+
+    case 'countPayments': {
+  const Payment = require('../../models/Payment');
+
+  return {
+    count: await Payment.countDocuments(payload || {}),
+  };
+}
+
+case 'getPayment': {
+  const Payment = require('../../models/Payment');
+
+  const payment = await Payment.findOne(payload || {}).lean();
+
+  return { payment };
+}
 
     default:
       throw new Error(`Unknown command "${command}".`);
