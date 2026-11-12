@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "jest --config ../verification/jest.backend.config.cjs --runInBand"
-  },
+ "scripts": {
+  "test": "jest --config ../tests/configs/jest.backend.config.cjs --runInBand",
+  "test:coverage": "jest --config ../tests/configs/jest.backend.config.cjs --runInBand --coverage"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

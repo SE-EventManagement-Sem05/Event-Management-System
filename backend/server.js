@@ -20,6 +20,8 @@ const {
 } = require('./controllers/reviewController');
 const { registerForEvent } = require('./controllers/registrationController');
 
+const { processPayment } = require('./controllers/paymentController');
+
 const app = express();
 const PORT = config.PORT;
 const JWT_SECRET = config.JWT_SECRET;
@@ -278,15 +280,14 @@ app.post(
   registerForEvent
 );
 
- // -------------------- ATTENDEE EVENTS (EMS-FR-08) --------------------
+// -------------------- SIMULATED EVENT PAYMENT (EMS-FR-11) --------------------
 
-app.get(
-  '/api/attendee/events',
+app.post(
+  '/api/attendee/events/:id/payment',
   authenticateToken,
   requireRole('attendee'),
-  listAttendeeEvents
+  processPayment
 );
-
 
 // -------------------- ERROR HANDLING --------------------
 

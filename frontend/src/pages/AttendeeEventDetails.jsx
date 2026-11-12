@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -5,6 +6,7 @@ import {
   fetchAttendeeEvent,
   submitEventReview,
   registerForEvent,
+  processEventPayment,
 } from '../utils/events.js';
 import {
   formatCapacity,
@@ -29,6 +31,13 @@ export default function AttendeeEventDetails() {
   const [comment, setComment] = useState('');
   const [saving, setSaving] = useState(false);
   const [registering, setRegistering] = useState(false);
+
+  // FR-11: Simulated payment state
+  const [paymentOutcome, setPaymentOutcome] = useState('success');
+  const [paymentError, setPaymentError] = useState('');
+  const [paying, setPaying] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState(null);
+
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
@@ -39,7 +48,11 @@ export default function AttendeeEventDetails() {
 
     fetchAttendeeEvent(id)
       .then((data) => {
-        if (!cancelled) setEvent(data);
+        if (!cancelled) {
+          setEvent(data);
+          // Restore an existing successful payment after refresh/navigation.
+          setPaymentDetails(data.payment || null);
+        }
       })
       .catch((err) => {
         if (cancelled) return;
@@ -79,6 +92,40 @@ export default function AttendeeEventDetails() {
       );
     } finally {
       setRegistering(false);
+    }
+  }
+
+  async function handlePayment() {
+    setPaying(true);
+    setPaymentError('');
+    setNotice('');
+
+    try {
+      const response = await processEventPayment(id, paymentOutcome);
+
+      if (response.payment) {
+        setPaymentDetails(response.payment);
+      }
+
+      setNotice(
+        response.message || 'Payment processed successfully.'
+      );
+
+      // Reload the event to obtain persisted payment data from the backend.
+      if (paymentOutcome === 'success') {
+        setReloadKey((key) => key + 1);
+      }
+    } catch (err) {
+      if (err instanceof SessionExpiredError) {
+        navigate('/login', { replace: true });
+        return;
+      }
+
+      setPaymentError(
+        err.message || 'Unable to process payment. Please try again.'
+      );
+    } finally {
+      setPaying(false);
     }
   }
 
@@ -193,9 +240,63 @@ export default function AttendeeEventDetails() {
         {isUpcoming && (
           <section className="registration-section">
             {event.isRegistered ? (
-              <p className="dash-notice" role="status">
-                You are registered for this event.
-              </p>
+              <div className="payment-section">
+                <p className="dash-notice" role="status">
+                  You are registered for this event.
+                </p>
+
+                {Number(event.price) > 0 && !paymentDetails && (
+                  <div className="payment-checkout">
+                    <h2>Simulated Checkout</h2>
+
+                    <p>
+                      Amount to pay: <strong>{formatPrice(event.price)}</strong>
+                    </p>
+
+                    <p className="muted">
+                      This is a demo payment. No real money will be charged.
+                    </p>
+
+                    <label htmlFor="payment-outcome">
+                      Simulate payment outcome
+                    </label>
+
+                    <select
+                      id="payment-outcome"
+                      value={paymentOutcome}
+                      onChange={(e) => setPaymentOutcome(e.target.value)}
+                      disabled={paying}
+                    >
+                      <option value="success">Successful payment</option>
+                      <option value="failed">Failed payment</option>
+                    </select>
+
+                    {paymentError && (
+                      <p className="event-error" role="alert">
+                        {paymentError}
+                      </p>
+                    )}
+
+                    <button
+                      type="button"
+                      className="event-button event-button-primary"
+                      onClick={handlePayment}
+                      disabled={paying}
+                    >
+                      {paying ? 'Processing…' : 'Pay now'}
+                    </button>
+                  </div>
+                )}
+
+                {paymentDetails && (
+                  <div className="payment-success" role="status">
+                    <h3>Payment successful!</h3>
+                    <p>Transaction ID: {paymentDetails.transactionId}</p>
+                    <p>Amount paid: {formatPrice(paymentDetails.amount)}</p>
+                    <p>Status: {paymentDetails.status}</p>
+                  </div>
+                )}
+              </div>
             ) : (
               <>
                 <button

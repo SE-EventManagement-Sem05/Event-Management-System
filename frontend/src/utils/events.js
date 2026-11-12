@@ -1,3 +1,4 @@
+
 import { API_BASE, getToken, clearSession } from './auth.js';
 
 export class SessionExpiredError extends Error {}
@@ -104,7 +105,11 @@ export async function fetchAttendeeEvents({
 }
 
 export async function createHostEvent(payload) {
-  const data = await authorizedRequest('/host/events', { method: 'POST', body: payload });
+  const data = await authorizedRequest('/host/events', {
+    method: 'POST',
+    body: payload,
+  });
+
   return data.event;
 }
 
@@ -113,6 +118,7 @@ export async function updateHostEvent(id, payload) {
     method: 'PUT',
     body: payload,
   });
+
   return data.event;
 }
 
@@ -138,5 +144,15 @@ export async function registerForEvent(id) {
   return authorizedRequest(
     `/attendee/events/${encodeURIComponent(id)}/register`,
     { method: 'POST' }
+  );
+}
+
+export async function processEventPayment(id, outcome) {
+  return authorizedRequest(
+    `/attendee/events/${encodeURIComponent(id)}/payment`,
+    {
+      method: 'POST',
+      body: { outcome },
+    }
   );
 }
