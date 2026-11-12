@@ -2,147 +2,167 @@
 
 Generated: 2026-11-08T06:05:15Z
 
-Covers functional, API, integration and responsive acceptance checks aligned with SRS/SAD/Test Plan.
+Coverage: Functional, API, integration, and responsive acceptance checks aligned with the SRS, SAD, and Test Plan.
 
-## Backend Acceptance / API / Integration Tests
+## 1. Backend Acceptance / API / Integration Tests
 
-PASS ../tests/backend/reviews.api.test.js (219.033 s)
-PASS ../tests/backend/eventManagement.test.js (64.483 s)
-PASS ../tests/backend/eventDetails.test.js (34.571 s)
-PASS ../tests/backend/hostEvents.test.js (19.144 s)
-PASS ../tests/backend/login.test.js (12.775 s)
-PASS ../tests/backend/auth.test.js
-PASS ../tests/backend/hostEvents.api.test.js
-PASS ../tests/backend/eventDetails.api.test.js
-PASS ../tests/backend/eventManagement.api.test.js
-PASS ../tests/backend/errorResponses.api.test.js
-PASS ../tests/backend/reviewController.unit.test.js
-PASS ../tests/backend/envConfig.test.js
-PASS ../tests/backend/eventController.unit.test.js
-PASS ../tests/backend/mongo.unit.test.js
-PASS ../tests/backend/config.unit.test.js
+### Test Results
 
-Test Suites: 15 passed, 15 total
-Tests:       284 passed, 284 total
-Snapshots:   0 total
-Time:        370.086 s
-Ran all test suites.
+| Test Suite                      | Result | Execution Time |
+| ------------------------------- | ------ | -------------- |
+| `reviews.api.test.js`           | PASS   | 219.033 s      |
+| `eventManagement.test.js`       | PASS   | 64.483 s       |
+| `eventDetails.test.js`          | PASS   | 34.571 s       |
+| `hostEvents.test.js`            | PASS   | 19.144 s       |
+| `login.test.js`                 | PASS   | 12.775 s       |
+| `auth.test.js`                  | PASS   | —              |
+| `hostEvents.api.test.js`        | PASS   | —              |
+| `eventDetails.api.test.js`      | PASS   | —              |
+| `eventManagement.api.test.js`   | PASS   | —              |
+| `errorResponses.api.test.js`    | PASS   | —              |
+| `reviewController.unit.test.js` | PASS   | —              |
+| `envConfig.test.js`             | PASS   | —              |
+| `eventController.unit.test.js`  | PASS   | —              |
+| `mongo.unit.test.js`            | PASS   | —              |
+| `config.unit.test.js`           | PASS   | —              |
 
-## Frontend Acceptance / Component / Flow Tests
+### Backend Summary
 
-[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
-(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
-  - ESM syntax in a file loaded as CommonJS (../tests/configs/vitest.config.js:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
-Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
-6:11:28 AM [vite] warning: `esbuild` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `oxc` instead.
-6:11:28 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
-Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ jsx: 'automatic', jsxImportSource: undefined }`
+| Metric               | Result    |
+| -------------------- | --------- |
+| Test suites passed   | 15 / 15   |
+| Tests passed         | 284 / 284 |
+| Snapshots            | 0         |
+| Total execution time | 370.086 s |
 
-[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/mnt/c/Users/Bhavana/Music/Event-Management-System/frontend[39m
+Result: All backend acceptance, API, integration, and unit test suites passed.
 
-[90mstderr[2m | ../tests/frontend/Landing.test.jsx[2m > [22m[2mEMS-FR-01 Landing page content[2m > [22m[2mthe main headline states the purpose of the platform
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+## 2. Frontend Acceptance / Component / Flow Tests
 
- [32m✓[39m ../tests/frontend/Landing.test.jsx [2m([22m[2m13 tests[22m[2m)[22m[33m 312[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/HostDashboard.test.jsx[2m > [22m[2mEMS-FR-05 Host dashboard[2m > [22m[2mwelcomes the host and requests upcoming and past events separately
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+### Build and Configuration Warnings
 
-[90mstderr[2m | ../tests/frontend/Login.test.jsx[2m > [22m[2mEMS-FR-03 Login form[2m > [22m[2mhas a role selector, email, password and a submit button
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+The frontend test run reported the following warnings:
 
- [32m✓[39m ../tests/frontend/Signup.test.jsx [2m([22m[2m7 tests[22m[2m)[22m[33m 311[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/EventForm.test.jsx[2m > [22m[2mEMS-FR-07 EventForm[2m > [22m[2mshows title, description, date/time, venue, price and capacity fields
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+- Vite Node API: The CommonJS (CJS) build of Vite's Node API is deprecated.
+- Vite configuration: The configuration uses ESM syntax in a file loaded as CommonJS (`../tests/configs/vitest.config.js`). Vite recommends using a `.mjs` extension or setting `"type": "module"` in the closest `package.json`.
+- esbuild options: The `esbuild` option specified by the `vite:react-babel` plugin is deprecated; Vite recommends using `oxc` instead.
+- Dependency optimization: `optimizeDeps.esbuildOptions` is deprecated in favour of `optimizeDeps.rolldownOptions`.
+- Configuration precedence: Both esbuild and OXC options were set. OXC options were used, and esbuild options were ignored.
 
- [32m✓[39m ../tests/frontend/HostDashboard.test.jsx [2m([22m[2m7 tests[22m[2m)[22m[33m 410[2mms[22m[39m
- [32m✓[39m ../tests/frontend/EventForm.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1412[2mms[22m[39m
- [32m✓[39m ../tests/frontend/Login.test.jsx [2m([22m[2m16 tests[22m[2m)[22m[33m 1565[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/Navbar.test.jsx[2m > [22m[2mEMS-FR-01 Navigation bar[2m > [22m[2mshows the logo linking to the landing page
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+### React Router Future Flag Warnings
 
- [32m✓[39m ../tests/frontend/Navbar.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 275[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/CreateEvent.test.jsx[2m > [22m[2mEMS-FR-07 Create event page[2m > [22m[2msaving returns to the dashboard with a success notice
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+The tests reported two React Router warnings:
 
- [32m✓[39m ../tests/frontend/ErrorMessage.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 136[2mms[22m[39m
- [32m✓[39m ../tests/frontend/CreateEvent.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[33m 758[2mms[22m[39m
-     [33m[2m✓[22m[39m saving returns to the dashboard with a success notice [33m 380[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/loginFlow.test.jsx[2m > [22m[2mEMS-FR-03 login journey through the app[2m > [22m[2ma host who logs in reaches the guarded host dashboard
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+- `v7_startTransition`: React Router will begin wrapping state updates in `React.startTransition` in v7.
+- `v7_relativeSplatPath`: Relative route resolution within Splat routes will change in v7.
 
- [32m✓[39m ../tests/frontend/loginFlow.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[33m 556[2mms[22m[39m
-     [33m[2m✓[22m[39m a host who logs in reaches the guarded host dashboard [33m 321[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/App.test.jsx[2m > [22m[2mEMS-FR-01 Landing page in the app[2m > [22m[2mthe landing page is shown at / with the navigation bar and footer
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+### Frontend Test Results
 
- [32m✓[39m ../tests/frontend/events.test.js [2m([22m[2m15 tests[22m[2m)[22m[32m 16[2mms[22m[39m
- [32m✓[39m ../tests/frontend/App.test.jsx [2m([22m[2m11 tests[22m[2m)[22m[33m 506[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/AttendeeEventDetails.test.jsx[2m > [22m[2mEMS-FR-12 attendee reviews[2m > [22m[2mshows the average rating and existing reviews
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+| Test File                       | Tests Passed | Result |
+| ------------------------------- | ------------ | ------ |
+| `Landing.test.jsx`              | 13           | PASS   |
+| `Signup.test.jsx`               | 7            | PASS   |
+| `HostDashboard.test.jsx`        | 7            | PASS   |
+| `EventForm.test.jsx`            | 10           | PASS   |
+| `Login.test.jsx`                | 16           | PASS   |
+| `Navbar.test.jsx`               | 6            | PASS   |
+| `ErrorMessage.test.jsx`         | 3            | PASS   |
+| `CreateEvent.test.jsx`          | 3            | PASS   |
+| `loginFlow.test.jsx`            | 3            | PASS   |
+| `events.test.js`                | 15           | PASS   |
+| `App.test.jsx`                  | 11           | PASS   |
+| `AttendeeEventDetails.test.jsx` | 3            | PASS   |
+| `EventDetails.test.jsx`         | 14           | PASS   |
+| `EventSection.test.jsx`         | 12           | PASS   |
+| `ProtectedRoute.test.jsx`       | 7            | PASS   |
+| `EditEvent.test.jsx`            | 6            | PASS   |
+| `eventFormat.test.js`           | 12           | PASS   |
+| `AttendeeDashboard.test.jsx`    | 3            | PASS   |
+| `eventForm.test.js`             | 30           | PASS   |
+| `auth.test.js`                  | 8            | PASS   |
+| `responsive.test.js`            | 5            | PASS   |
 
- [32m✓[39m ../tests/frontend/AttendeeEventDetails.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[33m 344[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/EventDetails.test.jsx[2m > [22m[2mEMS-FR-06 Event details page[2m > [22m[2mrequests the event named in the URL
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+### Additional Runtime Message
 
- [32m✓[39m ../tests/frontend/EventDetails.test.jsx [2m([22m[2m14 tests[22m[2m)[22m[33m 315[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/EventSection.test.jsx[2m > [22m[2mEMS-FR-05 EventSection[2m > [22m[2meach title links to the details page when getDetailsPath is given (EMS-FR-06)
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+The following message appeared during the test run:
 
- [32m✓[39m ../tests/frontend/EventSection.test.jsx [2m([22m[2m12 tests[22m[2m)[22m[33m 376[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/ProtectedRoute.test.jsx[2m > [22m[2mEMS-FR-04 ProtectedRoute[2m > [22m[2mredirects to login when there is no session
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
-
- [32m✓[39m ../tests/frontend/ProtectedRoute.test.jsx [2m([22m[2m7 tests[22m[2m)[22m[32m 146[2mms[22m[39m
-[90mstderr[2m | ../tests/frontend/EditEvent.test.jsx[2m > [22m[2mEMS-FR-07 Edit event page[2m > [22m[2mloads the event and pre-fills the form
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
-
- [32m✓[39m ../tests/frontend/EditEvent.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 290[2mms[22m[39m
- [32m✓[39m ../tests/frontend/eventFormat.test.js [2m([22m[2m12 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+```
 Not implemented: navigation to another Document
- [32m✓[39m ../tests/frontend/AttendeeDashboard.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 112[2mms[22m[39m
- [32m✓[39m ../tests/frontend/eventForm.test.js [2m([22m[2m30 tests[22m[2m)[22m[32m 10[2mms[22m[39m
- [32m✓[39m ../tests/frontend/auth.test.js [2m([22m[2m8 tests[22m[2m)[22m[32m 7[2mms[22m[39m
- [32m✓[39m ../tests/frontend/responsive.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+```
 
-[2m Test Files [22m [1m[32m21 passed[39m[22m[90m (21)[39m
-[2m      Tests [22m [1m[32m194 passed[39m[22m[90m (194)[39m
-[2m   Start at [22m 06:11:30
-[2m   Duration [22m 34.16s[2m (transform 12.76s, setup 103.17s, import 42.49s, tests 7.88s, environment 293.99s)[22m
+### Frontend Summary
+
+| Metric              | Result    |
+| ------------------- | --------- |
+| Test files passed   | 21 / 21   |
+| Tests passed        | 194 / 194 |
+| Start time          | 06:11:30  |
+| Total duration      | 34.16 s   |
+| Transform time      | 12.76 s   |
+| Setup time          | 103.17 s  |
+| Import time         | 42.49 s   |
+| Test execution time | 7.88 s    |
+| Environment time    | 293.99 s  |
+
+Result: All frontend component, flow, and acceptance test files passed.
+
+## 3. Responsive Layout Acceptance (EMS-NFR-03)
+
+Prerequisite: The frontend development server must be running at `BASE_URL` (default: `http://localhost:5173`).
+
+### Responsive Test Results
+
+The following routes were tested at four viewport widths:
+
+| Route     | 360px | 768px | 1024px | 1920px |
+| --------- | ----- | ----- | ------ | ------ |
+| `/`       | PASS  | PASS  | PASS   | PASS   |
+| `/login`  | PASS  | PASS  | PASS   | PASS   |
+| `/signup` | PASS  | PASS  | PASS   | PASS   |
+
+All checks returned HTTP 200, and the reported document width matched the tested viewport width.
+
+### Responsive Test Summary
 
 
-## Responsive Layout Acceptance (EMS-NFR-03)
 
-Note: requires frontend dev server at BASE_URL (default http://localhost:5173).
+PASS
 
-PASS / at 360px (HTTP 200, document 360px)
-PASS / at 768px (HTTP 200, document 768px)
-PASS / at 1024px (HTTP 200, document 1024px)
-PASS / at 1920px (HTTP 200, document 1920px)
-PASS /login at 360px (HTTP 200, document 360px)
-PASS /login at 768px (HTTP 200, document 768px)
-PASS /login at 1024px (HTTP 200, document 1024px)
-PASS /login at 1920px (HTTP 200, document 1920px)
-PASS /signup at 360px (HTTP 200, document 360px)
-PASS /signup at 768px (HTTP 200, document 768px)
-PASS /signup at 1024px (HTTP 200, document 1024px)
-PASS /signup at 1920px (HTTP 200, document 1920px)
-Overall: PASS
-Raw results: tests/reports/responsive-results.json
-Report: tests/reports/responsive-report.md
+&#x20;Overall responsive acceptance result
 
-## Summary
-System acceptance suites completed. Review pass/fail above.
-Responsive results (if run): tests/reports/responsive-report.md and responsive-results.json
+
+
+- All 3 routes passed at all 4 viewport widths.
+- Total responsive checks: 12.
+- No failed checks were reported.
+
+### Generated Artifacts
+
+| Artifact               | Location                                |
+| ---------------------- | --------------------------------------- |
+| Raw responsive results | `tests/reports/responsive-results.json` |
+| Responsive report      | `tests/reports/responsive-report.md`    |
+
+## 4. Overall System Acceptance Summary
+
+| Area                                         | Result |
+| -------------------------------------------- | ------ |
+| Backend acceptance / API / integration tests | PASS   |
+| Frontend component / flow / acceptance tests | PASS   |
+| Responsive layout acceptance (EMS-NFR-03)    | PASS   |
+
+### Combined Test Totals
+
+| Metric                  | Result     |
+| ----------------------- | ---------- |
+| Backend test suites     | 15 passed  |
+| Backend tests           | 284 passed |
+| Frontend test files     | 21 passed  |
+| Frontend tests          | 194 passed |
+| Total test suites/files | 36 passed  |
+| Total tests passed      | 478        |
+| Reported test failures  | 0          |
+| Responsive checks       | 12 passed  |
+
+Final Result: System acceptance suites completed successfully. All reported backend and frontend tests passed, and all responsive layout checks passed.
+
