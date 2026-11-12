@@ -37,7 +37,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: path.join(frontendDir, 'src/test/setup.js'),
-    include: [path.join(projectRoot, 'tests/frontend/**/*.test.{js,jsx}')],
+    include: ['../tests/frontend/**/*.test.{js,jsx}'],
     coverage: {
       provider: 'v8',
       reportsDirectory: path.join(projectRoot, 'tests/reports/coverage-frontend-temp'),

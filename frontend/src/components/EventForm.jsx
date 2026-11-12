@@ -19,7 +19,7 @@ export default function EventForm({
   initialValues,
   originalEvent = null,
   submitLabel,
-  savingLabel = 'SavingΓÇª',
+  savingLabel = 'Saving…',
   onSubmit,
   onSessionExpired,
 }) {
