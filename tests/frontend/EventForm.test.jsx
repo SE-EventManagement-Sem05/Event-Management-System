@@ -36,7 +36,9 @@ async function fillForm(user, overrides = {}) {
 
   await user.type(screen.getByLabelText('Title'), values.title);
   await user.type(screen.getByLabelText('Description'), values.description);
-  fireEvent.change(screen.getByLabelText('Date and time'), { target: { value: values.date } });
+  fireEvent.change(screen.getByLabelText('Date and time'), {
+    target: { value: values.date },
+  });
   await user.type(screen.getByLabelText('Venue'), values.venue);
   await user.type(screen.getByLabelText('Price'), values.price);
   await user.type(screen.getByLabelText('Capacity'), values.capacity);
@@ -49,6 +51,7 @@ describe('EMS-FR-07 EventForm', () => {
     for (const label of ['Title', 'Description', 'Date and time', 'Venue', 'Price', 'Capacity']) {
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     }
+
     expect(screen.getByRole('button', { name: 'Create event' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Cancel' })).toHaveAttribute('href', '/host/dashboard');
   });
@@ -69,6 +72,7 @@ describe('EMS-FR-07 EventForm', () => {
     ]) {
       expect(screen.getByText(message)).toBeInTheDocument();
     }
+
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
@@ -123,11 +127,13 @@ describe('EMS-FR-07 EventForm', () => {
       price: 250,
       capacity: 75,
     };
+
     const onSubmit = renderForm({
       initialValues: toFormValues(event),
       originalEvent: event,
       submitLabel: 'Save changes',
     });
+
     const user = userEvent.setup();
 
     expect(screen.getByLabelText('Title')).toHaveValue('Old Gala');
@@ -146,13 +152,12 @@ describe('EMS-FR-07 EventForm', () => {
   });
 
   test('server field errors are shown next to their fields and the input is kept', async () => {
-    const onSubmit = vi
-      .fn()
-      .mockRejectedValue(
-        new ApiValidationError('Please correct the highlighted fields.', {
-          title: 'Title is required.',
-        })
-      );
+    const onSubmit = vi.fn().mockRejectedValue(
+      new ApiValidationError('Please correct the highlighted fields.', {
+        title: 'Title is required.',
+      })
+    );
+
     renderForm({ onSubmit });
     const user = userEvent.setup();
 
@@ -165,9 +170,10 @@ describe('EMS-FR-07 EventForm', () => {
   });
 
   test('a general error is shown and the input is kept so the user can retry', async () => {
-    const onSubmit = vi
-      .fn()
-      .mockRejectedValue(new Error('Unable to connect to the server. Please try again.'));
+    const onSubmit = vi.fn().mockRejectedValue(
+      new Error('Unable to connect to the server. Please try again.')
+    );
+
     renderForm({ onSubmit });
     const user = userEvent.setup();
 
@@ -177,6 +183,7 @@ describe('EMS-FR-07 EventForm', () => {
     expect(
       await screen.findByText('Unable to connect to the server. Please try again.')
     ).toBeInTheDocument();
+
     expect(screen.getByLabelText('Title')).toHaveValue('Tech Meetup');
     expect(screen.getByRole('button', { name: 'Create event' })).toBeEnabled();
   });
@@ -184,6 +191,7 @@ describe('EMS-FR-07 EventForm', () => {
   test('an expired session is reported to the parent', async () => {
     const onSessionExpired = vi.fn();
     const onSubmit = vi.fn().mockRejectedValue(new SessionExpiredError('expired'));
+
     renderForm({ onSubmit, onSessionExpired });
     const user = userEvent.setup();
 
@@ -195,14 +203,18 @@ describe('EMS-FR-07 EventForm', () => {
 
   test('double clicking submits only once while saving', async () => {
     const onSubmit = vi.fn().mockReturnValue(new Promise(() => {}));
+
     renderForm({ onSubmit });
     const user = userEvent.setup();
 
     await fillForm(user);
+
     const button = screen.getByRole('button', { name: 'Create event' });
     await user.dblClick(button);
 
     expect(onSubmit).toHaveBeenCalledTimes(1);
-    expect(await screen.findByRole('button', { name: 'Saving…' })).toBeDisabled();
+    expect(
+      await screen.findByRole('button', { name: 'Saving…' })
+    ).toBeDisabled();
   });
 });
