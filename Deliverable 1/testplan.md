@@ -218,8 +218,8 @@ The following deliverables shall be produced during the testing process:
 | Role | Name | Responsibility |
 |------|------|----------------|
 | QA Lead | Piya | Prepare the test plan, coordinate testing activities, and review test results |
-| Test Engineer | Ananya | Design and execute test cases and report defects |
-| Developer | Sharanya | Support testing, investigate defects, and implement fixes |
+| Test Engineer | Ananya, Sharanya | Design and execute test cases and report defects |
+| Developer | Ananya, Sharanya | Support testing, investigate defects, and implement fixes |
 | Product Owner | Piya | Review test results and approve system readiness |
 
 ---
