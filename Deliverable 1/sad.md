@@ -539,7 +539,6 @@ Future enhancements may include:
 | ---------- | ----------------------------- |
 | Excalidraw | UML diagrams                  |
 | draw.io    | Architecture and UML diagrams |
-| Postman    | API testing                   |
 | Git/GitHub | Version control               |
 
 ---
