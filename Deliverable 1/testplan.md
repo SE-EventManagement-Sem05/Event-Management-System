@@ -292,11 +292,11 @@ The following deliverables shall be produced during the testing process:
 | EMS-FR-06 | TC-EVT-08 … TC-EVT-13 | `eventDetails*.test.js`, `EventDetails.test.jsx`, `eventFormat.test.js` |
 | EMS-FR-07 | TC-EVT-14 … TC-EVT-21 | `eventManagement*.test.js`, `eventController.unit.test.js`, `CreateEvent.test.jsx`, `EditEvent.test.jsx`, `EventForm.test.jsx`, `eventForm.test.js` |
 | EMS-FR-08 | TC-ATT-01, TC-ATT-02 | `AttendeeDashboard.test.jsx`, `AttendeeEventDetails.test.jsx` |
-| EMS-FR-09 | — | Yet to be done |
-| EMS-FR-10 | — | Yet to be done |
-| EMS-FR-11 | — | Yet to be done |
+| EMS-FR-09 | — | Done |
+| EMS-FR-10 | — | Done |
+| EMS-FR-11 | — | Done |
 | EMS-FR-12 | TC-REV-01 … TC-REV-05 | `reviewController.unit.test.js`, `reviews.api.test.js` |
-| EMS-FR-13 | — | Yet to be done |
+| EMS-FR-13 | — | Done |
 | EMS-FR-14 | TC-ERR-01 … TC-ERR-05 | `errorResponses.api.test.js`, `ErrorMessage.test.jsx`, form error paths |
 | EMS-NFR-01 | TC-PERF-01, TC-PERF-02 | `tests/performance/run-performance.mjs` |
 | EMS-NFR-02 | Manual | — |
