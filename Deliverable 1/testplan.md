@@ -5,7 +5,7 @@
 | **Project** | Event Management System |
 | **Version** | 1.1 (updated for Sprint 1 and Sprint 2 implementation) |
 | **Authors** | Piya, Sharanya, Ananya |
-| **Date** | 28-09-2026 (v1.0), revised 08-11-2026 (v1.1) |
+| **Date** | 28-09-2026 (v1.0), revised 17-11-2026 (v1.2) |
 | **Status** | Partially outlined testcases |
 
 ---
@@ -491,4 +491,4 @@ Temporary HTML/LCOV artefacts have been written under `tests/reports/coverage-*-
 
 | Role | Name | Signature/Date |
 |------|------|----------------|
-| Project Manager | Piya Banerjee | Piya / 28.9.26 |
+| Project Manager | Piya Banerjee | Piya / 17.11.26 |
