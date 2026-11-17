@@ -10,7 +10,7 @@ The purpose of this Software Requirements Specification (SRS) is to describe the
 
 The Event Management System is a web-based application that allows users to either act as Hosts or Attendees. Hosts can create and manage events, while Attendees can search for events based on their location and interests, view event details, register for events, book events, and provide ratings and reviews.
 
-The system will also provide location-based event suggestions and allow hosts to promote their events as featured events. Payment for events will only be simulated, and no actual financial transaction will be carried out.
+Payment for events will only be simulated, and no actual financial transaction will be carried out.
 
 ### 1.3 Definitions, Acronyms \& Abbreviations
 
@@ -61,11 +61,11 @@ This includes role-based access between the Host user and Attendee user. The int
 
 - **Login Interface:** Allows users to select their role and enter their credentials.
 
-- **Host Dashboard:** Allows hosts to view their past and upcoming events and access event statistics, ratings, reviews, and revenue information.
+- **Host Dashboard:** Allows hosts to view their past and upcoming events and access event statistics, ratings, and reviews.
 
 - **Attendee Dashboard:** Allows attendees to view past and upcoming registered events and discover new events.
 
-- **Event Discovery Interface:** Allows attendees to search and filter events based on location and interests.
+- **Event Discovery Interface:** Allows attendees to browse, search, and filter events based on location and interests.
 
 - **Mock Payment Interface:** Provides a simulated payment process for event registration.
 
@@ -73,7 +73,7 @@ This includes role-based access between the Host user and Attendee user. The int
 
 #### 2.1.3 Hardware Interfaces
 
-The system does not require any specialised hardware, and the only requirement is the user's desktop, laptop, or mobile device. The server is to be cloud hosted.
+The system does not require any specialised hardware, and the only requirement is the user's desktop, laptop, or mobile device. The server is configured to run in a local hosting environment.
 
 #### 2.1.4 Software Interfaces
 
@@ -105,9 +105,9 @@ MongoDB shall store application data including events, user profiles, reviews, a
 
 - The system shall use memory efficiently at both the frontend and server levels.
 
-- The frontend shall store only the temporary state and data required for application operation and shall avoid unnecessary storage of large event data or objects.
+- The frontend shall store only the temporary state and data required for application operation.
 
-- The server shall avoid unnecessary records and unbounded caching and shall use efficient database queries.
+- The server shall use paginated queries and avoid unnecessary records.
 
 - Database indexing shall be used for frequently queried fields where appropriate.
 
@@ -171,7 +171,7 @@ Users shall:
 
 - View attendee statistics.
 
-- View ratings, reviews, and booking revenue for each event.
+- View ratings and reviews for each event.
 
 - View how their event looks on the page/dashboard.
 
@@ -181,7 +181,7 @@ Users shall:
 
 - View historical events they have attended, i.e., events they have booked previously.
 
-- View new events as they appear on their feed.
+- View available events as they appear on the event browsing feed.
 
 - Search for events.
 
@@ -221,13 +221,13 @@ The system shall provide appropriate feedback/error messages when:
 
 - Simulated payment fails.
 
-The system should allow the user to retry appropriate operations without requiring a restart.
+The system shall allow the user to retry supported frontend operations and handle MongoDB database reconnection without requiring an application restart.
 
 #### 2.1.8 Site Adaptation Requirements
 
 - The environment-specific variables shall be put into `.env` files which are customised for different environments. These include configured environment variables such as MongoDB URI, Backend Port, SQLite Path, and JWT Secret Token.
 
-- The system shall provide appropriate device support for both PCs and mobile devices via the browser.
+- The system shall provide responsive device support across public entry routes (`/`, `/login`, `/signup`) for both PCs and mobile devices via the browser.
 
 ### 2.2 Product Functions
 
@@ -239,9 +239,9 @@ The system should allow the user to retry appropriate operations without requiri
 
 - **Dashboards:** After login, the respective dashboards are displayed.
 
-  - **If logged in as Host:** All the events hosted by them in the past [under the History tab] and current events being hosted [under the Upcoming tab] are shown. Upon clicking an event, the entire event details, statistics about the number of attendees, ratings, reviews, revenue, etc. are displayed.
+  - **If logged in as Host:** All the events hosted by them in the past [under the History tab] and current events being hosted [under the Upcoming tab] are shown. Upon clicking an event, the entire event details, statistics about the number of attendees, ratings, and reviews are displayed.
 
-  - **If logged in as Attendee:** The recommended events for the user are shown, along with all the events attended by them in the past [under the History tab] and current events being attended [under the Upcoming tab], which are shown in a different "Personal Events" page. There is also an option to search for new events based on location, interests, etc., and a Find Events tab. In the Find Events tab, upon finding a suitable event, users have the option to pay for the event via the website. This should lead to a false/simulated payment page because it is not in our scope to implement actual payment. This will push the event to the upcoming registered events tab.
+  - **If logged in as Attendee:** Available events for browsing are shown, along with all the events attended by them in the past [under the History tab] and current events being attended [under the Upcoming tab], which are shown in a different "Personal Events" page. There is also an option to search for new events based on location, interests, etc., and a Find Events tab. In the Find Events tab, upon finding a suitable event, users have the option to pay for the event via the website. This should lead to a false/simulated payment page because it is not in our scope to implement actual payment. This will push the event to the upcoming registered events tab.
 
 ### 2.3 User Characteristics
 
@@ -265,7 +265,7 @@ A Host is expected to:
 
 - View event ratings, reviews, and feedback.
 
-- View event-related statistics such as registration count and revenue.
+- View event-related statistics such as registration count.
 
 The Host is assumed to have basic familiarity with:
 
@@ -343,7 +343,7 @@ The current version of the Event Management System will implement the core funct
 
 - Host event management and viewing of event-related statistics.
 
-- Attendee event search and filtering based on location and interests.
+- Attendee event browsing, search, and filtering based on location and interests.
 
 - Viewing event details.
 
@@ -357,15 +357,21 @@ The current version of the Event Management System will implement the core funct
 
 - Secure access to role-specific functionality.
 
-- Responsive web-based user interface.
+- Responsive web-based user interface on public entry routes.
 
 **Outside the scope of the current version (may be considered for future releases):**
 
 - Integration with real payment gateways such as Razorpay or Stripe.
 
+- Cloud hosting deployment and infrastructure scaling.
+
 - Native Android or iOS mobile applications.
 
-- Advanced event recommendation and personalization mechanisms beyond the basic recommendation functionality provided in the current version.
+- Personalized event recommendation engine and location-based event suggestions.
+
+- Featured event promotion capabilities for hosts.
+
+- Automated booking revenue aggregation on the Host Dashboard.
 
 - Additional third-party service integrations.
 
@@ -389,13 +395,13 @@ Requirements identified for future releases may be incorporated based on user ne
 
   - **Login Interface:** Dropdown selector for user role (Host/Attendee) alongside email/username and password credentials.
 
-- **Event Browsing \& Recommendations Page:** A dedicated browsing page shall display a collection of events recommended to the attendee based on factors such as their location, interests, event categories, and previously viewed or registered events. The page shall present events in an easily browsable format, allowing attendees to discover events without performing a specific search. Each event listing shall provide key information such as the event name, category, location, date, and relevant event details. Selecting an event shall open its detailed event page, where the attendee can view additional information and register for the event.
+- **Event Browsing Page:** A dedicated browsing page shall display available events to the attendee, along with search and filter options by location, interests, and category. The page shall present events in an easily browsable format, allowing attendees to discover events without performing a specific search. Each event listing shall provide key information such as the event name, category, location, date, and relevant event details. Selecting an event shall open its detailed event page, where the attendee can view additional information and register for the event.
 
 - **Host Dashboard**
 
   - **Event Lists:** Tabbed navigation between History (past hosted events) and Upcoming hosted events.
 
-  - **Event Analytics View:** Detailed view per event showing total attendees, ratings, reviews, and total revenue metrics.
+  - **Event Analytics View:** Detailed view per event showing total attendees, ratings, and reviews.
 
 - **Attendee Dashboard**
 
@@ -435,7 +441,7 @@ Requirements identified for future releases may be incorporated based on user ne
 
 - **Dashboard Overview:** Hosts will be able to view their hosted events split into History and Upcoming sections.
 
-- **Event Analytics:** System will display aggregate metrics for selected events, including ticket sales count, revenue generated, star ratings, and attendee comments.
+- **Event Analytics:** System will display aggregate metrics for selected events, including ticket sales count, star ratings, and attendee comments.
 
 #### 3.2.3 Attendee Capabilities
 
@@ -451,9 +457,9 @@ Requirements identified for future releases may be incorporated based on user ne
 
 - **Response Time:** Authentication and dashboard data loading should execute within 2 seconds under standard network conditions.
 
-- **Recommendation Refresh Time:** The system shall refresh and display updated event recommendations within 2 seconds of a recommendation refresh request under standard network conditions.
+- **Event Listing Refresh Time:** The system shall refresh and display updated event listings within 2 seconds of a search or filter request under standard network conditions.
 
-- **UI Responsiveness:** The landing page, dashboards, event browsing page, and recommendation interface must render smoothly across major desktop screen resolutions.
+- **UI Responsiveness:** The landing page, login page, signup page, dashboards, and event browsing page must render smoothly across major desktop screen resolutions.
 
 ### 3.4 Design Constraints
 
@@ -501,4 +507,4 @@ Requirements identified for future releases may be incorporated based on user ne
 
 - **Register for Event** `«include»`s **Make Simulated Payment**.
 
-- **View Attendee Statistics**, **View Ratings**, **View Reviews** and **View Revenue** are `«extend»` use cases of **View Event Analytics**. Arrows point from the extending use case to the base use case, as in standard UML.
+- **View Attendee Statistics**, **View Ratings**, and **View Reviews** are `«extend»` use cases of **View Event Analytics**. Arrows point from the extending use case to the base use case, as in standard UML.
