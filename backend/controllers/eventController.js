@@ -335,13 +335,23 @@ async function listAttendeeEvents(req, res) {
     ]);
 
     return res.status(200).json({
-      status,
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-      events,
-    });
+    status,
+    page,
+    limit,
+    total,
+    totalPages: Math.ceil(total / limit),
+    events: events.map((event) => ({
+      id: event._id,
+      title: event.title,
+      description: event.description,
+      date: event.date,
+      venue: event.venue,
+      price: event.price,
+      capacity: event.capacity,
+      category: event.category || '',
+    })),
+  });
+
   } catch (error) {
     console.error('List attendee events error:', error.message);
 
